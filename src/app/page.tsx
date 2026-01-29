@@ -127,7 +127,7 @@ const folderAgendaData = [
       "Metrics dashboard review",
     ],
     count: 6,
-    color: "purple" as const,
+    color: "yellow" as const,
     avatars: [
       { id: "1", name: "Chris Martin" },
       { id: "2", name: "Anna Kim" },

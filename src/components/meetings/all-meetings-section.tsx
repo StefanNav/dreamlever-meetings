@@ -131,60 +131,59 @@ export function AllMeetingsSection({ initialMeetings }: AllMeetingsSectionProps)
             AI Settings
           </Button>
         </div>
-        {/* Tab bar row - segmented control + calendar */}
+        {/* Tab bar - fills width with calendar inside */}
         <div 
-          className={`flex items-center gap-4 transition-all duration-200 ${
+          className={`transition-all duration-200 ${
             isSticky ? "pb-3 border-b" : ""
           }`}
           style={isSticky ? { borderColor: 'rgba(0,0,0,0.06)' } : undefined}
         >
-          {/* Segmented control */}
           <MeetingListFilter 
             activeFilter={visibleSection} 
             onFilterChange={handleTabClick} 
-          />
-          
-          {/* Selected date badge */}
-          {selectedDate && (
-            <div className="flex items-center gap-1 px-3 py-1.5 bg-cyan-50 text-cyan-700 rounded-[10px] text-sm font-medium">
-              <span>{format(selectedDate, "MMM d, yyyy")}</span>
-              <button 
-                onClick={clearDateFilter}
-                className="ml-1 hover:bg-cyan-100 rounded-full p-0.5"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          )}
-          
-          {/* Calendar icon button */}
-          <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
-            <PopoverTrigger asChild>
-              <button
-                className="w-9 h-9 flex items-center justify-center rounded-[10px] bg-white border text-[#6B7280] hover:text-[#111827] transition-all"
-                style={{ 
-                  borderColor: 'rgba(0,0,0,0.06)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 1px 2px rgba(0,0,0,0.10)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-                aria-label="Select date"
-              >
-                <Calendar className="w-4 h-4" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="end">
-              <CalendarComponent
-                mode="single"
-                selected={selectedDate}
-                onSelect={handleDateSelect}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
+          >
+            {/* Selected date badge */}
+            {selectedDate && (
+              <div className="flex items-center gap-1 px-3 py-1.5 bg-cyan-50 text-cyan-700 rounded-[10px] text-sm font-medium">
+                <span>{format(selectedDate, "MMM d, yyyy")}</span>
+                <button 
+                  onClick={clearDateFilter}
+                  className="ml-1 hover:bg-cyan-100 rounded-full p-0.5"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+            
+            {/* Calendar icon button */}
+            <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+              <PopoverTrigger asChild>
+                <button
+                  className="w-9 h-9 flex items-center justify-center rounded-[10px] bg-white border text-[#6B7280] hover:text-[#111827] transition-all"
+                  style={{ 
+                    borderColor: 'rgba(0,0,0,0.06)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 1px 2px rgba(0,0,0,0.10)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                  aria-label="Select date"
+                >
+                  <Calendar className="w-4 h-4" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="end">
+                <CalendarComponent
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={handleDateSelect}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </MeetingListFilter>
         </div>
       </div>
 

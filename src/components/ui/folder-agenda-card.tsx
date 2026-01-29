@@ -80,6 +80,12 @@ const colorVariants = {
     back: "#c84f86",         // 6% darker
     backGradient: "linear-gradient(180deg, #d85a94 0%, #b8447a 100%)",
   },
+  yellow: {
+    front: "#d4a024",        // Amber/gold
+    frontGradient: "linear-gradient(180deg, #e0ab2e 0%, #c4941e 100%)",
+    back: "#b8901c",         // 6% darker
+    backGradient: "linear-gradient(180deg, #d4a024 0%, #a88218 100%)",
+  },
 } as const;
 
 type ColorVariant = keyof typeof colorVariants;
