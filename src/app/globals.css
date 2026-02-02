@@ -213,3 +213,10 @@
   scrollbar-width: thin;
   scrollbar-color: var(--muted-foreground) transparent;
 }
+
+/* Source highlight for deep-link navigation */
+.source-highlight {
+  background-color: #fef3c7 !important; /* yellow-100 */
+  box-shadow: 0 0 0 2px #fbbf24; /* yellow-400 ring */
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
