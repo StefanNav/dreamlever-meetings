@@ -1,9 +1,9 @@
 "use client";
 
-import { Search, X } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import React from "react";
+import { Search, X, Inbox, Circle, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Tooltip } from "@/components/ui/tooltip";
 import type {
   NotificationFilterType,
   NotificationStatusFilter,
@@ -16,6 +16,12 @@ const typeLabels: Record<NotificationFilterType, string> = {
   mention: "Mentions",
   comment: "Comments",
   assignment: "Assignments",
+};
+
+const statusIcons: Record<NotificationStatusFilter, { icon: React.ReactNode; label: string }> = {
+  all: { icon: <Inbox className="w-4 h-4" />, label: "All" },
+  unread: { icon: <Circle className="w-4 h-4 fill-current" />, label: "Unread" },
+  read: { icon: <CheckCircle className="w-4 h-4" />, label: "Read" },
 };
 
 interface NotificationFiltersProps {
@@ -39,68 +45,63 @@ export function NotificationFilters({
     <div className="space-y-4">
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6D9097]" />
         <input
           type="text"
           placeholder="Search notifications..."
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-9 pr-9 py-2 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-cyan-dark/20 focus:border-cyan-dark transition-colors"
+          className="w-full pl-9 pr-9 py-2.5 text-sm border border-[#E6E6E6] rounded-xl bg-[#FCFCFC] focus:outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan transition-colors placeholder:text-[#6D9097]"
         />
         {searchQuery && (
           <button
             onClick={() => onSearchChange("")}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6D9097] hover:text-cyan transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
         )}
       </div>
 
-      {/* Type Tabs */}
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <Tabs
-          value={typeFilter}
-          onValueChange={(value) => onTypeChange(value as NotificationFilterType)}
-        >
-          <TabsList className="bg-muted/50 p-1 rounded-lg">
-            {(Object.keys(typeLabels) as NotificationFilterType[]).map((type) => (
-              <TabsTrigger
-                key={type}
-                value={type}
-                className={cn(
-                  "px-3 py-1.5 text-xs font-medium rounded-md transition-colors",
-                  "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
-                  "data-[state=inactive]:text-muted-foreground data-[state=inactive]:hover:text-foreground"
-                )}
-              >
-                {typeLabels[type]}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-
-        {/* Status Filter */}
-        <div className="flex items-center gap-1 bg-muted/50 p-1 rounded-lg">
-          {(["all", "unread", "read"] as NotificationStatusFilter[]).map(
-            (status) => (
-              <Button
-                key={status}
-                variant="ghost"
-                size="sm"
+      {/* Status & Type Filters - Combined */}
+      <div className="flex items-center gap-1.5 p-1.5 bg-[#FCFCFC] border border-[#E6E6E6] rounded-xl w-full">
+        {/* Status Filter - Icon Toggles */}
+        {(["all", "unread", "read"] as NotificationStatusFilter[]).map(
+          (status) => (
+            <Tooltip key={status} content={statusIcons[status].label} position="bottom">
+              <button
                 onClick={() => onStatusChange(status)}
                 className={cn(
-                  "px-3 py-1.5 h-auto text-xs font-medium rounded-md",
+                  "p-2 transition-all duration-200 rounded-lg",
                   statusFilter === status
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground hover:bg-transparent"
+                    ? "bg-gradient-to-b from-white to-[#F0F0F0] text-[#2D4A50] shadow-[0_2px_4px_0_rgba(63,140,156,0.15)] border border-[#E6E6E6]"
+                    : "text-[#6D9097] hover:text-cyan hover:bg-cyan-light/50"
                 )}
               >
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-              </Button>
-            )
-          )}
-        </div>
+                {statusIcons[status].icon}
+              </button>
+            </Tooltip>
+          )
+        )}
+
+        {/* Separator */}
+        <div className="w-px h-6 bg-[#E6E6E6] mx-1" />
+
+        {/* Type Filter */}
+        {(Object.keys(typeLabels) as NotificationFilterType[]).map((type) => (
+          <button
+            key={type}
+            onClick={() => onTypeChange(type)}
+            className={cn(
+              "px-3 py-1.5 text-xs font-medium transition-all duration-200 rounded-lg",
+              typeFilter === type
+                ? "bg-gradient-to-b from-white to-[#F0F0F0] text-[#2D4A50] shadow-[0_2px_4px_0_rgba(63,140,156,0.15)] border border-[#E6E6E6]"
+                : "text-[#6D9097] hover:text-cyan hover:bg-cyan-light/50"
+            )}
+          >
+            {typeLabels[type]}
+          </button>
+        ))}
       </div>
     </div>
   );

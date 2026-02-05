@@ -73,7 +73,7 @@ export function NotificationItem({
     <div
       className={cn(
         "flex items-start gap-3 px-4 py-3 transition-colors",
-        "hover:bg-muted/50",
+        "hover:bg-cyan-light/30",
         !notification.isRead && "bg-cyan-light/10"
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -85,7 +85,7 @@ export function NotificationItem({
           type="checkbox"
           checked={isSelected}
           onChange={handleCheckboxChange}
-          className="w-4 h-4 rounded border-border text-cyan-dark focus:ring-cyan-dark cursor-pointer"
+          className="w-4 h-4 rounded border-[#E6E6E6] text-cyan focus:ring-cyan cursor-pointer"
           onClick={(e) => e.stopPropagation()}
         />
       </div>
@@ -95,7 +95,7 @@ export function NotificationItem({
         className={cn(
           "mt-0.5 p-1.5 rounded-full shrink-0",
           notification.isRead
-            ? "bg-muted text-muted-foreground"
+            ? "bg-[#F0F0F0] text-[#6D9097]"
             : "bg-cyan-light text-cyan-dark"
         )}
       >
@@ -108,13 +108,13 @@ export function NotificationItem({
           className={cn(
             "text-sm",
             notification.isRead
-              ? "font-normal text-foreground"
-              : "font-semibold text-foreground"
+              ? "font-normal text-[#2D4A50]"
+              : "font-semibold text-[#2D4A50]"
           )}
         >
           {notification.primaryText}
         </p>
-        <p className="text-xs text-muted-foreground mt-0.5">
+        <p className="text-xs text-[#6D9097] mt-0.5">
           {notification.contextText}
         </p>
       </div>
@@ -126,7 +126,7 @@ export function NotificationItem({
             {!notification.isRead && (
               <button
                 onClick={handleMarkAsRead}
-                className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                className="p-1.5 rounded-md hover:bg-cyan-light text-[#6D9097] hover:text-cyan transition-colors"
                 title="Mark as read"
               >
                 <Check className="w-4 h-4" />
@@ -134,14 +134,14 @@ export function NotificationItem({
             )}
             <button
               onClick={handleDelete}
-              className="p-1.5 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+              className="p-1.5 rounded-md hover:bg-destructive/10 text-[#6D9097] hover:text-destructive transition-colors"
               title="Delete"
             >
               <Trash2 className="w-4 h-4" />
             </button>
           </div>
         ) : (
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-[#6D9097]">
             {formatRelativeTime(notification.createdAt)}
           </span>
         )}
