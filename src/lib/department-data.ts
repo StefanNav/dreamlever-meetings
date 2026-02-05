@@ -51,10 +51,12 @@ export interface FutureItem {
 }
 
 // Action Items types
+export type ActionItemStatus = "incomplete" | "in_progress" | "complete";
+
 export interface ActionItem {
   id: string;
   title: string;
-  status: "complete" | "incomplete";
+  status: ActionItemStatus;
   assignee: { id: string; name: string; avatar?: string } | null;
   dueDate?: string;
   notes?: string;

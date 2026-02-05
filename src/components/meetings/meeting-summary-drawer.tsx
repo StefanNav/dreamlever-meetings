@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronsRight, Paperclip, Link2, MoreHorizontal, Bot } from "lucide-react";
+import { ChevronsRight, Paperclip, Link2, MoreHorizontal, Bot, ChevronRight, Home } from "lucide-react";
 import { Meeting } from "@/types/meetings";
 import Image from "next/image";
 
@@ -140,8 +140,21 @@ export function MeetingSummaryDrawer({ meeting, isOpen, onClose }: MeetingSummar
               </div>
             </div>
 
+            {/* Breadcrumb Navigation */}
+            <nav className="flex items-center gap-1.5 text-sm px-6 pt-4" aria-label="Breadcrumb">
+              <button
+                onClick={onClose}
+                className="flex items-center gap-1 text-muted-foreground hover:text-cyan transition-colors"
+              >
+                <Home className="w-3.5 h-3.5" />
+                <span>Meetings</span>
+              </button>
+              <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
+              <span className="text-foreground font-medium">{meeting.title}</span>
+            </nav>
+
             {/* Header */}
-            <div className="px-6 pt-6 pb-4">
+            <div className="px-6 pt-4 pb-4">
               <h2 className="text-2xl font-semibold text-foreground mb-3">
                 Meeting Summary and Recording
               </h2>

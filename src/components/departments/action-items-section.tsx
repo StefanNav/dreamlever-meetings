@@ -1,27 +1,33 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { Search, ChevronDown, Check, Circle, Info, CheckSquare, User, Calendar, CalendarDays } from "lucide-react";
+import { useState, useRef, useCallback } from "react";
+import { Search, ChevronDown, Check, Circle, Info, CheckSquare, User, Calendar, CalendarDays, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tooltip } from "@/components/ui/tooltip";
 import { OnboardingSpotlight } from "@/components/ui/onboarding-spotlight";
 import { ActionItemDrawer } from "./action-item-drawer";
-import { ActionItem, Participant } from "@/lib/department-data";
+import { ActionItem, ActionItemStatus, Participant } from "@/lib/department-data";
 import { cn } from "@/lib/utils";
 
 interface ActionItemsSectionProps {
   actionItems: ActionItem[];
   participants: Participant[];
   onNavigateToAgenda?: () => void;
+  onUpdateActionItem?: (id: string, updates: Partial<ActionItem>) => Promise<void>;
+  onDeleteActionItem?: (id: string) => Promise<void>;
 }
+
+type StatusFilterType = "all" | ActionItemStatus;
 
 export function ActionItemsSection({
   actionItems,
   participants,
   onNavigateToAgenda,
+  onUpdateActionItem,
+  onDeleteActionItem,
 }: ActionItemsSectionProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "complete" | "incomplete">("all");
+  const [statusFilter, setStatusFilter] = useState<StatusFilterType>("all");
   const [assigneeFilter, setAssigneeFilter] = useState<string | null>(null);
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
   const [isAssigneeDropdownOpen, setIsAssigneeDropdownOpen] = useState(false);
@@ -29,6 +35,14 @@ export function ActionItemsSection({
   // Drawer state
   const [selectedItem, setSelectedItem] = useState<ActionItem | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  
+  // Local state for optimistic updates
+  const [localActionItems, setLocalActionItems] = useState<ActionItem[]>(actionItems);
+
+  // Sync local state with props when actionItems changes
+  useState(() => {
+    setLocalActionItems(actionItems);
+  });
 
   // Ref for onboarding spotlight target
   const contentRef = useRef<HTMLDivElement>(null);
@@ -46,8 +60,55 @@ export function ActionItemsSection({
     setTimeout(() => setSelectedItem(null), 200);
   };
 
+  // Handle update action item with optimistic update
+  const handleUpdateActionItem = useCallback(async (id: string, updates: Partial<ActionItem>) => {
+    // Optimistic update
+    setLocalActionItems(prev => 
+      prev.map(item => item.id === id ? { ...item, ...updates } : item)
+    );
+    
+    // Also update the selected item if it's the one being updated
+    setSelectedItem(prev => 
+      prev && prev.id === id ? { ...prev, ...updates } : prev
+    );
+    
+    try {
+      // Call the actual update function
+      await onUpdateActionItem?.(id, updates);
+    } catch (error) {
+      // Rollback on error - restore from original actionItems
+      const originalItem = actionItems.find(item => item.id === id);
+      if (originalItem) {
+        setLocalActionItems(prev =>
+          prev.map(item => item.id === id ? originalItem : item)
+        );
+        setSelectedItem(prev => 
+          prev && prev.id === id ? originalItem : prev
+        );
+      }
+      throw error;
+    }
+  }, [actionItems, onUpdateActionItem]);
+
+  // Handle delete action item
+  const handleDeleteActionItem = useCallback(async (id: string) => {
+    // Optimistic update - remove from list
+    setLocalActionItems(prev => prev.filter(item => item.id !== id));
+    
+    try {
+      await onDeleteActionItem?.(id);
+    } catch (error) {
+      // Rollback on error - restore the item
+      const deletedItem = actionItems.find(item => item.id === id);
+      if (deletedItem) {
+        setLocalActionItems(prev => [...prev, deletedItem]);
+      }
+      throw error;
+    }
+  }, [actionItems, onDeleteActionItem]);
+
   // Get unique assignees from action items (excluding null assignees)
-  const assignees = actionItems.reduce((acc, item) => {
+  const assignees = localActionItems.reduce((acc, item) => {
     if (item.assignee && !acc.find((a) => a.id === item.assignee!.id)) {
       acc.push(item.assignee);
     }
@@ -55,14 +116,22 @@ export function ActionItemsSection({
   }, [] as { id: string; name: string; avatar?: string }[]);
 
   // Filter action items
-  const filteredItems = actionItems.filter((item) => {
+  const filteredItems = localActionItems.filter((item) => {
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === "all" || item.status === statusFilter;
     const matchesAssignee = !assigneeFilter || (item.assignee && item.assignee.id === assigneeFilter);
     return matchesSearch && matchesStatus && matchesAssignee;
   });
 
-  const hasItems = actionItems.length > 0;
+  const hasItems = localActionItems.length > 0;
+
+  // Status filter options
+  const statusOptions: { value: StatusFilterType; label: string }[] = [
+    { value: "all", label: "All statuses" },
+    { value: "incomplete", label: "Incomplete" },
+    { value: "in_progress", label: "In progress" },
+    { value: "complete", label: "Complete" },
+  ];
 
   return (
     <div className="space-y-6">
@@ -70,7 +139,7 @@ export function ActionItemsSection({
       <div className="flex items-center gap-2" ref={contentRef}>
         <h3 className="text-sm font-medium text-foreground">Action Items</h3>
         <Tooltip 
-          content="Action items are follow-ups created automatically from meeting transcripts or agenda discussions."
+          content="To-dos created from agenda discussions."
           position="right"
         >
           <button className="p-0.5 rounded-full hover:bg-muted transition-colors">
@@ -118,11 +187,7 @@ export function ActionItemsSection({
             )}
           >
             <span>
-              {statusFilter === "all"
-                ? "All statuses"
-                : statusFilter === "complete"
-                ? "Complete"
-                : "Incomplete"}
+              {statusOptions.find(opt => opt.value === statusFilter)?.label}
             </span>
             <ChevronDown className="w-4 h-4 text-muted-foreground" />
           </button>
@@ -133,23 +198,19 @@ export function ActionItemsSection({
                 onClick={() => setIsStatusDropdownOpen(false)}
               />
               <div className="absolute top-full left-0 mt-1 w-40 bg-white border border-border rounded-lg shadow-lg z-20">
-                {["all", "complete", "incomplete"].map((status) => (
+                {statusOptions.map((option) => (
                   <button
-                    key={status}
+                    key={option.value}
                     onClick={() => {
-                      setStatusFilter(status as "all" | "complete" | "incomplete");
+                      setStatusFilter(option.value);
                       setIsStatusDropdownOpen(false);
                     }}
                     className={cn(
                       "w-full px-3 py-2 text-sm text-left hover:bg-muted/50 first:rounded-t-lg last:rounded-b-lg",
-                      statusFilter === status && "bg-muted/30"
+                      statusFilter === option.value && "bg-muted/30"
                     )}
                   >
-                    {status === "all"
-                      ? "All statuses"
-                      : status === "complete"
-                      ? "Complete"
-                      : "Incomplete"}
+                    {option.label}
                   </button>
                 ))}
               </div>
@@ -271,14 +332,14 @@ export function ActionItemsSection({
               No action items yet
             </p>
             <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-              Action items are created from{" "}
+              Action items are created during meetings to track follow-ups from{" "}
               <button
                 onClick={onNavigateToAgenda}
                 className="text-primary hover:underline font-medium"
               >
                 agenda discussions
-              </button>{" "}
-              or generated automatically from meeting transcripts.
+              </button>
+              .
             </p>
           </div>
         )}
@@ -290,6 +351,8 @@ export function ActionItemsSection({
         isOpen={isDrawerOpen}
         onClose={handleDrawerClose}
         participants={participants}
+        onUpdateActionItem={handleUpdateActionItem}
+        onDeleteActionItem={handleDeleteActionItem}
       />
     </div>
   );
@@ -303,7 +366,6 @@ interface ActionItemRowProps {
 }
 
 function ActionItemRow({ item, index = 0, onClick }: ActionItemRowProps) {
-  const [isRowHovered, setIsRowHovered] = useState(false);
   const [hoveredCell, setHoveredCell] = useState<string | null>(null);
 
   const initials = item.assignee
@@ -314,6 +376,26 @@ function ActionItemRow({ item, index = 0, onClick }: ActionItemRowProps) {
   const isEvenRow = index % 2 === 0;
   const baseRowColor = isEvenRow ? "bg-white" : "bg-[#F7FDFE]";
 
+  // Status icon based on status
+  const getStatusIcon = () => {
+    switch (item.status) {
+      case "complete":
+        return (
+          <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
+            <Check className="w-3 h-3 text-green-600" />
+          </div>
+        );
+      case "in_progress":
+        return (
+          <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
+            <Loader2 className="w-3 h-3 text-blue-600" />
+          </div>
+        );
+      default:
+        return <Circle className="w-5 h-5 text-muted-foreground" />;
+    }
+  };
+
   return (
     <div 
       className={cn(
@@ -321,21 +403,13 @@ function ActionItemRow({ item, index = 0, onClick }: ActionItemRowProps) {
         baseRowColor
       )}
       onClick={onClick}
-      onMouseEnter={() => setIsRowHovered(true)}
       onMouseLeave={() => {
-        setIsRowHovered(false);
         setHoveredCell(null);
       }}
     >
       {/* Status Icon */}
       <div className="flex items-center justify-center px-2 py-3">
-        {item.status === "complete" ? (
-          <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
-            <Check className="w-3 h-3 text-green-600" />
-          </div>
-        ) : (
-          <Circle className="w-5 h-5 text-muted-foreground" />
-        )}
+        {getStatusIcon()}
       </div>
 
       {/* Title */}

@@ -66,6 +66,10 @@
 }
 
 :root {
+  /* Sidebar dimensions */
+  --sidebar-width-collapsed: 64px;
+  --sidebar-width-expanded: 220px;
+  
   --radius: 0.625rem;
   --background: #ffffff;
   --foreground: #1a1a2e;

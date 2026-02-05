@@ -87,18 +87,17 @@ function DepartmentDetailContent({ id }: { id: string }) {
   }
 
   const breadcrumbItems = [
-    { label: "Meetings", href: "/" },
+    { label: "Meetings", href: "/meetings" },
     { label: department.name },
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-5xl mx-auto px-8">
+    <div className="max-w-5xl mx-auto px-8">
         {/* Top Navigation Bar */}
         <div className="flex items-center justify-between py-4">
           <Breadcrumb
             items={breadcrumbItems}
-            onCollapse={() => router.push("/")}
+            onCollapse={() => router.push("/meetings")}
           />
           <div className="flex items-center gap-3">
             <button
@@ -224,7 +223,6 @@ function DepartmentDetailContent({ id }: { id: string }) {
 
         {/* Bottom spacing */}
         <div className="h-16" />
-      </div>
     </div>
   );
 }
