@@ -27,7 +27,7 @@ export function AgendaDateGroup({
     >
       {/* Date Header Row - 7 grid children */}
       <div
-        className={`${AGENDA_GRID_ROW} bg-[#F7FDFE] transition-colors cursor-pointer`}
+        className={`${AGENDA_GRID_ROW} bg-surface-alt transition-colors cursor-pointer`}
         onClick={() => setIsExpanded(!isExpanded)}
       >
         {/* [expand] - chevron */}

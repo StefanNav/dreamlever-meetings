@@ -1,0 +1,48 @@
+# Button
+
+## Purpose
+
+Primary interactive element for user actions. Built on shadcn/ui with CVA variants.
+
+## Source
+
+`src/components/ui/button.tsx`
+
+## Variants
+
+| Variant | Class | Usage |
+|---|---|---|
+| `default` | `bg-primary text-primary-foreground` | Primary actions |
+| `destructive` | `bg-destructive text-white` | Dangerous/delete actions |
+| `outline` | `border border-input bg-background` | Secondary actions |
+| `secondary` | `bg-secondary text-secondary-foreground` | Tertiary actions |
+| `ghost` | Transparent, hover bg | Minimal chrome actions |
+| `link` | Underline text | Inline text links |
+
+## Sizes
+
+| Size | Dimensions | Usage |
+|---|---|---|
+| `xs` | `h-7 px-2` | Compact inline actions |
+| `sm` | `h-8 px-3` | Table row actions |
+| `default` | `h-9 px-4` | Standard |
+| `lg` | `h-10 px-6` | Hero/prominent actions |
+| `icon` | `size-9` | Icon-only button |
+
+## States
+
+- **Default**: Normal appearance
+- **Hover**: Slightly darker/lighter background
+- **Focus**: Ring outline via `focus-visible:ring`
+- **Disabled**: 50% opacity, `cursor-not-allowed`
+- **Loading**: Use disabled + spinner icon
+
+## Accessibility
+
+- Uses `<button>` element or `Slot` for composition
+- Supports `aria-label` for icon-only buttons
+- Focus ring visible on keyboard navigation
+
+## Storybook
+
+[Button stories](http://localhost:6006/?path=/docs/ui-button--docs)

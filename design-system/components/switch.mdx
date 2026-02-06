@@ -1,0 +1,38 @@
+# Switch
+
+## Purpose
+
+Toggle control for binary on/off states. Built on Radix Switch primitive.
+
+## Source
+
+`src/components/ui/switch.tsx`
+
+## Sizes
+
+| Size | Track | Thumb | Usage |
+|---|---|---|---|
+| `default` | `h-[1.15rem] w-8` | `size-4` | Standard toggle |
+| `sm` | `h-3.5 w-6` | `size-3` | Compact/inline toggle |
+
+## Tokens Used
+
+- `data-[state=checked]:bg-primary` — Active state uses brand primary
+- `data-[state=unchecked]:bg-input` — Inactive state uses input border color
+- Custom: `data-[state=checked]:bg-cyan` applied via className for AI toggles
+
+## States
+
+- **Unchecked**: Muted track, thumb at left
+- **Checked**: Primary-colored track, thumb slides right
+- **Disabled**: 50% opacity, `cursor-not-allowed`
+- **Focus**: Ring outline via `focus-visible:ring`
+
+## Accessibility
+
+- Built on Radix Switch, provides `role="switch"` and `aria-checked` automatically
+- Always pair with a visible label
+
+## Storybook
+
+[Switch stories](http://localhost:6006/?path=/docs/ui-switch--docs)

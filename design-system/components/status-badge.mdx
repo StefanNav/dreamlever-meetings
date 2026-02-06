@@ -1,0 +1,40 @@
+# Status Badge
+
+## Purpose
+
+Indicates the current status of a meeting. Built with CVA.
+
+## Source
+
+`src/components/meetings/status-badge.tsx`
+
+## Variants
+
+| Status | Appearance | Behavior |
+|---|---|---|
+| `live` | Green bg, pulsing dot | Animated indicator |
+| `recurring` | Amber bg | Static label |
+| `upcoming` | (renders null) | Hidden |
+| `past` | (renders null) | Hidden |
+
+## Props
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `status` | `MeetingStatus` | Yes | `"live" \| "recurring" \| "upcoming" \| "past"` |
+| `className` | `string` | No | Additional classes |
+
+## Tokens Used
+
+- `--live` / `--live-bg` for live status
+- `--recurring` / `--recurring-bg` for recurring status
+- Both have full dark mode overrides
+
+## Accessibility
+
+- Live status includes animated pulse dot — respects `prefers-reduced-motion` via Tailwind's `animate-pulse`
+- Text label always present alongside color indicator
+
+## Storybook
+
+[StatusBadge stories](http://localhost:6006/?path=/docs/meetings-statusbadge--docs)

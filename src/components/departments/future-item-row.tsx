@@ -23,12 +23,12 @@ export function FutureItemRow({ item, index = 0, onEditClick }: FutureItemRowPro
 
   // Alternating row colors
   const isEvenRow = index % 2 === 0;
-  const baseRowColor = isEvenRow ? "bg-white" : "bg-[#F7FDFE]";
+  const baseRowColor = isEvenRow ? "bg-white" : "bg-surface-alt";
 
   return (
     <div
       className={cn(
-        "border-b border-[#e0f2fe] last:border-b-0 transition-colors relative",
+        "border-b border-border-table last:border-b-0 transition-colors relative",
         baseRowColor
       )}
       onMouseEnter={() => setIsRowHovered(true)}
@@ -43,7 +43,7 @@ export function FutureItemRow({ item, index = 0, onEditClick }: FutureItemRowPro
         <div 
           className={cn(
             "flex items-center py-2 pl-2 pr-4 relative transition-all",
-            hoveredCell === "title" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+            hoveredCell === "title" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
           )}
           onMouseEnter={() => setHoveredCell("title")}
           onMouseLeave={() => setHoveredCell(null)}
@@ -78,7 +78,7 @@ export function FutureItemRow({ item, index = 0, onEditClick }: FutureItemRowPro
         <div 
           className={cn(
             "flex items-center gap-1.5 px-4 py-2 transition-all",
-            hoveredCell === "createdBy" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+            hoveredCell === "createdBy" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
           )}
           onMouseEnter={() => setHoveredCell("createdBy")}
           onMouseLeave={() => setHoveredCell(null)}
@@ -98,7 +98,7 @@ export function FutureItemRow({ item, index = 0, onEditClick }: FutureItemRowPro
         <div 
           className={cn(
             "px-4 py-2 transition-all",
-            hoveredCell === "time" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+            hoveredCell === "time" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
           )}
           onMouseEnter={() => setHoveredCell("time")}
           onMouseLeave={() => setHoveredCell(null)}
@@ -110,7 +110,7 @@ export function FutureItemRow({ item, index = 0, onEditClick }: FutureItemRowPro
         <div 
           className={cn(
             "px-4 py-2 transition-all",
-            hoveredCell === "description" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+            hoveredCell === "description" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
           )}
           onMouseEnter={() => setHoveredCell("description")}
           onMouseLeave={() => setHoveredCell(null)}
@@ -124,7 +124,7 @@ export function FutureItemRow({ item, index = 0, onEditClick }: FutureItemRowPro
         <div 
           className={cn(
             "px-4 py-2 transition-all",
-            hoveredCell === "date" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+            hoveredCell === "date" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
           )}
           onMouseEnter={() => setHoveredCell("date")}
           onMouseLeave={() => setHoveredCell(null)}

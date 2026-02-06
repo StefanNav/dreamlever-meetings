@@ -1,0 +1,41 @@
+# Avatar
+
+## Purpose
+
+Displays user profile images with fallback initials. Built on Radix Avatar primitive.
+
+## Source
+
+`src/components/ui/avatar.tsx`
+
+## Sizes
+
+| Size | Dimensions | Usage |
+|---|---|---|
+| `sm` | `size-6` | Inline mentions, table rows |
+| `default` | `size-8` | Standard profile display |
+| `lg` | `size-10` | Profile cards, headers |
+
+## Sub-components
+
+- `Avatar` — Root container
+- `AvatarImage` — Image element (lazy-loaded)
+- `AvatarFallback` — Initials shown while image loads or on error
+- `AvatarBadge` — Status indicator dot
+- `AvatarGroup` — Overlapping stack of avatars
+- `AvatarGroupCount` — "+N" overflow counter
+
+## States
+
+- **Image loaded**: Shows the profile photo
+- **Loading/Error**: Shows `AvatarFallback` with initials
+- **Grouped**: Negative margin overlap with ring border
+
+## Accessibility
+
+- `alt` text required on `AvatarImage`
+- Fallback text provides visual identification
+
+## Storybook
+
+[Avatar stories](http://localhost:6006/?path=/docs/ui-avatar--docs)

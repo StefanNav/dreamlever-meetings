@@ -4,6 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* ── Core Semantic (shadcn/ui) ── */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
@@ -45,10 +46,38 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
-  /* Dreamlever Custom Colors */
+  /* ── Brand Colors ── */
   --color-cyan: var(--cyan);
   --color-cyan-light: var(--cyan-light);
   --color-cyan-dark: var(--cyan-dark);
+  --color-brand-gradient-start: var(--brand-gradient-start);
+  --color-brand-gradient-end: var(--brand-gradient-end);
+
+  /* ── Semantic Typography ── */
+  --color-heading-1: var(--heading-1);
+  --color-heading-2: var(--heading-2);
+  --color-text-secondary: var(--text-secondary);
+
+  /* ── Semantic Surfaces ── */
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-surface-filter: var(--surface-filter);
+
+  /* ── Semantic Borders ── */
+  --color-border-light: var(--border-light);
+  --color-border-table: var(--border-table);
+
+  /* ── Interactive ── */
+  --color-highlight-hover: var(--highlight-hover);
+
+  /* ── Folder Card ── */
+  --color-folder-paper-border: var(--folder-paper-border);
+  --color-folder-agenda-title: var(--folder-agenda-title);
+  --color-folder-agenda-text: var(--folder-agenda-text);
+  --color-folder-agenda-bullet: var(--folder-agenda-bullet);
+  --color-folder-focus-ring: var(--folder-focus-ring);
+
+  /* ── Category Colors ── */
   --color-operations: var(--operations);
   --color-operations-bg: var(--operations-bg);
   --color-design: var(--design);
@@ -59,6 +88,8 @@
   --color-marketing-bg: var(--marketing-bg);
   --color-sales: var(--sales);
   --color-sales-bg: var(--sales-bg);
+
+  /* ── Status Colors ── */
   --color-live: var(--live);
   --color-live-bg: var(--live-bg);
   --color-recurring: var(--recurring);
@@ -66,49 +97,110 @@
 }
 
 :root {
-  /* Sidebar dimensions */
+  /* ═══════════════════════════════════════════════
+     Brand Primitives — raw palette, single source of truth
+     ═══════════════════════════════════════════════ */
+  --brand-primary: #00bcd4;
+  --brand-primary-light: #e0f7fa;
+  --brand-primary-dark: #00838f;
+  --brand-gradient-start: #4DD0E1;
+  --brand-gradient-end: #26C6DA;
+
+  /* ═══════════════════════════════════════════════
+     Layout Dimensions
+     ═══════════════════════════════════════════════ */
   --sidebar-width-collapsed: 64px;
   --sidebar-width-expanded: 220px;
-  
+
+  /* ═══════════════════════════════════════════════
+     Radius Scale
+     ═══════════════════════════════════════════════ */
   --radius: 0.625rem;
+
+  /* ═══════════════════════════════════════════════
+     Core Semantic Colors (shadcn/ui)
+     ═══════════════════════════════════════════════ */
   --background: #ffffff;
   --foreground: #1a1a2e;
   --card: #ffffff;
   --card-foreground: #1a1a2e;
   --popover: #ffffff;
   --popover-foreground: #1a1a2e;
-  --primary: #00bcd4;
+  --primary: var(--brand-primary);
   --primary-foreground: #ffffff;
   --secondary: #f5f5f5;
   --secondary-foreground: #1a1a2e;
   --muted: #f8f9fa;
   --muted-foreground: #6b7280;
-  --accent: #e0f7fa;
-  --accent-foreground: #00838f;
+  --accent: var(--brand-primary-light);
+  --accent-foreground: var(--brand-primary-dark);
   --destructive: #ef4444;
   --border: #e5e7eb;
   --input: #e5e7eb;
-  --ring: #00bcd4;
+  --ring: var(--brand-primary);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
+
+  /* ═══════════════════════════════════════════════
+     Sidebar Colors
+     ═══════════════════════════════════════════════ */
   --sidebar: #ffffff;
   --sidebar-foreground: #1a1a2e;
-  --sidebar-primary: #00bcd4;
+  --sidebar-primary: var(--brand-primary);
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e0f7fa;
-  --sidebar-accent-foreground: #00838f;
+  --sidebar-accent: var(--brand-primary-light);
+  --sidebar-accent-foreground: var(--brand-primary-dark);
   --sidebar-border: #e5e7eb;
-  --sidebar-ring: #00bcd4;
+  --sidebar-ring: var(--brand-primary);
 
-  /* Dreamlever Brand Colors */
-  --cyan: #00bcd4;
-  --cyan-light: #e0f7fa;
-  --cyan-dark: #00838f;
-  
-  /* Category Badge Colors */
+  /* ═══════════════════════════════════════════════
+     Brand Aliases
+     Consumed via Tailwind: text-cyan, bg-cyan-light, etc.
+     ═══════════════════════════════════════════════ */
+  --cyan: var(--brand-primary);
+  --cyan-light: var(--brand-primary-light);
+  --cyan-dark: var(--brand-primary-dark);
+
+  /* ═══════════════════════════════════════════════
+     Semantic Typography
+     ═══════════════════════════════════════════════ */
+  --heading-1: #2D4A50;
+  --heading-2: #2D4A50;
+  --text-secondary: #6D9097;
+
+  /* ═══════════════════════════════════════════════
+     Semantic Surfaces
+     ═══════════════════════════════════════════════ */
+  --surface: #FCFCFC;
+  --surface-alt: #F7FDFE;
+  --surface-filter: #F6F7F9;
+
+  /* ═══════════════════════════════════════════════
+     Semantic Borders
+     ═══════════════════════════════════════════════ */
+  --border-light: #E6E6E6;
+  --border-table: #e0f2fe;
+
+  /* ═══════════════════════════════════════════════
+     Interactive
+     ═══════════════════════════════════════════════ */
+  --highlight-hover: #67e8f9;
+
+  /* ═══════════════════════════════════════════════
+     Folder Card Tokens
+     ═══════════════════════════════════════════════ */
+  --folder-paper-border: #D1D1D1;
+  --folder-agenda-title: #7a7a7a;
+  --folder-agenda-text: #4a4a4a;
+  --folder-agenda-bullet: #b0b0b0;
+  --folder-focus-ring: #7161d1;
+
+  /* ═══════════════════════════════════════════════
+     Category Badge Colors
+     ═══════════════════════════════════════════════ */
   --operations: #00838f;
   --operations-bg: #e0f7fa;
   --design: #d81b60;
@@ -119,8 +211,10 @@
   --marketing-bg: #e3f2fd;
   --sales: #f4511e;
   --sales-bg: #fbe9e7;
-  
-  /* Status Badge Colors */
+
+  /* ═══════════════════════════════════════════════
+     Status Badge Colors
+     ═══════════════════════════════════════════════ */
   --live: #4caf50;
   --live-bg: #e8f5e9;
   --recurring: #ff9800;
@@ -128,37 +222,86 @@
 }
 
 .dark {
+  /* ── Core Semantic Colors ── */
   --background: #1a1a2e;
   --foreground: #f8f9fa;
   --card: #262640;
   --card-foreground: #f8f9fa;
   --popover: #262640;
   --popover-foreground: #f8f9fa;
-  --primary: #00bcd4;
+  --primary: var(--brand-primary);
   --primary-foreground: #ffffff;
   --secondary: #3d3d5c;
   --secondary-foreground: #f8f9fa;
   --muted: #3d3d5c;
   --muted-foreground: #9ca3af;
   --accent: #1a3a3d;
-  --accent-foreground: #00bcd4;
+  --accent-foreground: var(--brand-primary);
   --destructive: #ef4444;
   --border: #3d3d5c;
   --input: #3d3d5c;
-  --ring: #00bcd4;
+  --ring: var(--brand-primary);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
+
+  /* ── Sidebar Colors ── */
   --sidebar: #262640;
   --sidebar-foreground: #f8f9fa;
-  --sidebar-primary: #00bcd4;
+  --sidebar-primary: var(--brand-primary);
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #1a3a3d;
-  --sidebar-accent-foreground: #00bcd4;
+  --sidebar-accent-foreground: var(--brand-primary);
   --sidebar-border: #3d3d5c;
-  --sidebar-ring: #00bcd4;
+  --sidebar-ring: var(--brand-primary);
+
+  /* ── Brand Aliases (dark overrides) ── */
+  --cyan-light: #1a3a3d;
+  --cyan-dark: #4dd0e1;
+
+  /* ── Semantic Typography ── */
+  --heading-1: #e0f2f1;
+  --heading-2: #e0f2f1;
+  --text-secondary: #8faab0;
+
+  /* ── Semantic Surfaces ── */
+  --surface: #2a2a45;
+  --surface-alt: #1e2e35;
+  --surface-filter: #33334d;
+
+  /* ── Semantic Borders ── */
+  --border-light: #3d3d5c;
+  --border-table: #1a3a4d;
+
+  /* ── Interactive ── */
+  --highlight-hover: #0e7490;
+
+  /* ── Folder Card (dark overrides) ── */
+  --folder-paper-border: #4a4a6a;
+  --folder-agenda-title: #9ca3af;
+  --folder-agenda-text: #d1d5db;
+  --folder-agenda-bullet: #6b7280;
+  --folder-focus-ring: #8b7cf7;
+
+  /* ── Category Badge Colors (dark overrides) ── */
+  --operations: #4dd0e1;
+  --operations-bg: #0d2f33;
+  --design: #f06292;
+  --design-bg: #3d1a2a;
+  --engineering: #4db6ac;
+  --engineering-bg: #1a3330;
+  --marketing: #64b5f6;
+  --marketing-bg: #1a2a3d;
+  --sales: #ff8a65;
+  --sales-bg: #3d2420;
+
+  /* ── Status Badge Colors (dark overrides) ── */
+  --live: #81c784;
+  --live-bg: #1b3320;
+  --recurring: #ffb74d;
+  --recurring-bg: #3d2e1a;
 }
 
 @layer base {

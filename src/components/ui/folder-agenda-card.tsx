@@ -8,25 +8,26 @@ import { cn } from "@/lib/utils";
 
 // ============================================================================
 // DESIGN TOKENS - Reusable style values for the folder card
+// References CSS variables from globals.css for theme-awareness.
 // ============================================================================
 
 export const folderDesignTokens = {
   paper: {
-    background: "#FCFCFC",
+    background: "var(--surface)",
     borderRadius: "8px",
-    border: "1px solid #D1D1D1",
+    border: "1px solid var(--folder-paper-border)",
     shadow: "0 1px 2px rgba(0, 0, 0, 0.04)",
     shadowHover: "0 8px 20px -4px rgba(0, 0, 0, 0.12), 0 4px 8px -4px rgba(0, 0, 0, 0.08)",
   },
   front: {
     background: "linear-gradient(180deg, #FFF 0%, #D2D2D2 100%)",
     borderRadius: "14px",
-    border: "2px solid #E6E6E6",
+    border: "2px solid var(--border-light)",
     shadow: "0 4px 4px 0 rgba(63, 140, 156, 0.19)",
     shadowHover: "0 20px 40px -8px rgba(63, 140, 156, 0.25), 0 8px 16px -4px rgba(63, 140, 156, 0.15)",
   },
   back: {
-    background: "linear-gradient(180deg, #FFF 0%, #6D9097 100%)",
+    background: "linear-gradient(180deg, #FFF 0%, var(--text-secondary) 100%)",
   },
   avatar: {
     size: 24,
@@ -206,7 +207,7 @@ export function FolderAgendaCard({
     <motion.div
       className={cn(
         "relative w-full max-w-[372px] h-[221px] cursor-pointer outline-none",
-        "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#7161d1]",
+        "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-folder-focus-ring",
         className
       )}
       initial="idle"
@@ -270,7 +271,7 @@ export function FolderAgendaCard({
           
           <div className="px-[18px] pt-[16px] pb-[24px] h-full flex flex-col">
             <div className="mb-[12px] shrink-0 pb-[10px] border-b border-gray-200/80">
-              <h4 className="text-[15px] font-medium text-[#7a7a7a] leading-[19px] tracking-[-0.23px]">
+              <h4 className="text-[15px] font-medium text-folder-agenda-title leading-[19px] tracking-[-0.23px]">
                 {agendaTitle}
               </h4>
             </div>
@@ -311,8 +312,8 @@ export function FolderAgendaCard({
                       className="flex items-start gap-[8px] text-[14px] leading-[20px] tracking-[-0.15px]"
                       variants={listItemVariants}
                     >
-                      <span className="text-[#b0b0b0] shrink-0">•</span>
-                      <span className="text-[#4a4a4a]">{item}</span>
+                      <span className="text-folder-agenda-bullet shrink-0">•</span>
+                      <span className="text-folder-agenda-text">{item}</span>
                     </motion.li>
                   ))}
                 </ul>
@@ -391,7 +392,7 @@ export function FolderAgendaCard({
                     ))}
                     {remainingAvatars > 0 && (
                       <div 
-                        className="relative rounded-full bg-[#6D9097] flex items-center justify-center"
+                        className="relative rounded-full bg-text-secondary flex items-center justify-center"
                         style={{ 
                           marginLeft: `${folderDesignTokens.avatar.overlap}px`,
                           width: `${folderDesignTokens.avatar.size}px`,

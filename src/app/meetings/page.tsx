@@ -232,7 +232,7 @@ export default function MeetingsPage() {
               <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
                 <Calendar className="w-8 h-8 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-medium text-[#2D4A50] mb-2">
+              <h3 className="text-lg font-medium text-heading-1 mb-2">
                 No meetings scheduled
               </h3>
               <p className="text-sm text-muted-foreground max-w-sm">

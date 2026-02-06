@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { springDrawer, fadeFast } from "@/lib/animation";
 import { ChevronsRight, Paperclip, Link2, MoreHorizontal, ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FutureItem } from "@/lib/department-data";
@@ -55,7 +56,7 @@ export function FutureItemDrawer({ item, meetingName = "Operations", isOpen, onC
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={fadeFast}
             className="fixed inset-0 bg-black/40 z-40"
             onClick={onClose}
           />
@@ -65,7 +66,7 @@ export function FutureItemDrawer({ item, meetingName = "Operations", isOpen, onC
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            transition={springDrawer}
             className="fixed right-0 top-0 h-full w-[530px] bg-white shadow-2xl z-50 flex flex-col rounded-l-[14px]"
           >
             {/* Top Bar */}
@@ -126,7 +127,7 @@ export function FutureItemDrawer({ item, meetingName = "Operations", isOpen, onC
                     <span className="px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted rounded-full border border-border">
                       {meetingName}
                     </span>
-                    <button className="flex items-center gap-1 px-3 py-0.5 text-sm text-muted-foreground bg-white border border-[#cff9fe] rounded-lg">
+                    <button className="flex items-center gap-1 px-3 py-0.5 text-sm text-muted-foreground bg-white border border-cyan-light rounded-lg">
                       <span>Future items</span>
                       <ChevronDown className="w-[18px] h-[18px]" />
                     </button>
@@ -139,7 +140,7 @@ export function FutureItemDrawer({ item, meetingName = "Operations", isOpen, onC
                 <label className="block text-sm text-muted-foreground mb-2">
                   Description of Item
                 </label>
-                <div className="p-2 bg-[#f5feff] border border-[#f5feff] rounded-lg min-h-[56px]">
+                <div className="p-2 bg-surface-alt border border-surface-alt rounded-lg min-h-[56px]">
                   <p className="text-sm text-foreground whitespace-pre-wrap">
                     {item.description}
                   </p>
@@ -151,7 +152,7 @@ export function FutureItemDrawer({ item, meetingName = "Operations", isOpen, onC
                 <label className="block text-sm text-muted-foreground mb-2">
                   Notes
                 </label>
-                <div className="p-2 bg-[#f5feff] border border-[#f5feff] rounded-lg min-h-[56px]">
+                <div className="p-2 bg-surface-alt border border-surface-alt rounded-lg min-h-[56px]">
                   <p className="text-sm text-foreground whitespace-pre-wrap">
                     {item.notes || ""}
                   </p>
@@ -180,7 +181,7 @@ export function FutureItemDrawer({ item, meetingName = "Operations", isOpen, onC
             </div>
 
             {/* Comment Input */}
-            <div className="px-6 py-4 bg-[#f5feff] rounded-bl-[14px]">
+            <div className="px-6 py-4 bg-surface-alt rounded-bl-[14px]">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-muted overflow-hidden shrink-0">
                   <div className="w-full h-full bg-gradient-to-br from-rose-400 to-rose-500 flex items-center justify-center">
@@ -190,7 +191,7 @@ export function FutureItemDrawer({ item, meetingName = "Operations", isOpen, onC
                 <input
                   type="text"
                   placeholder="Comment..."
-                  className="flex-1 px-4 py-2.5 text-sm bg-white border border-[#ecfdff] rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan transition-all"
+                  className="flex-1 px-4 py-2.5 text-sm bg-white border border-cyan-light rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan transition-all"
                 />
               </div>
             </div>

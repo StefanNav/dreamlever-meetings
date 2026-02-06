@@ -59,7 +59,7 @@ export function FutureItemsSection({
       {/* Table */}
       <div className="bg-white border border-border rounded-lg overflow-hidden">
         {/* Column Headers */}
-        <div className="grid grid-cols-[220px_150px_120px_1fr_120px_32px] items-center bg-muted/50 border-b border-[#e0f2fe] text-xs font-medium text-muted-foreground">
+        <div className="grid grid-cols-[220px_150px_120px_1fr_120px_32px] items-center bg-muted/50 border-b border-border-table text-xs font-medium text-muted-foreground">
           <div className="px-4 py-2 pl-12 flex items-center gap-1.5">
             <FileText className="w-3.5 h-3.5 shrink-0" />
             <span className="truncate">Item</span>
@@ -105,7 +105,7 @@ export function FutureItemsSection({
         ))}
 
         {/* Add item row - at bottom when items exist, above empty state when empty */}
-        <div className={`px-4 py-2 pl-12 ${futureItems.length > 0 ? "border-t border-[#e0f2fe]" : ""}`}>
+        <div className={`px-4 py-2 pl-12 ${futureItems.length > 0 ? "border-t border-border-table" : ""}`}>
           <button
             onClick={onNewItem}
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
@@ -116,7 +116,7 @@ export function FutureItemsSection({
 
         {/* Empty state message - only shown when no items */}
         {futureItems.length === 0 && (
-          <div className="px-6 py-12 text-center border-t border-[#e0f2fe]">
+          <div className="px-6 py-12 text-center border-t border-border-table">
             <p className="text-sm font-medium text-foreground mb-2">
               No future items yet.
             </p>

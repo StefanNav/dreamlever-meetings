@@ -287,7 +287,7 @@ export function ActionItemsSection({
         {hasItems ? (
           <>
             {/* Table Header */}
-            <div className="grid grid-cols-[40px_1fr_150px_100px_120px] items-center bg-muted/50 border-b border-[#e0f2fe] text-xs font-medium text-muted-foreground">
+            <div className="grid grid-cols-[40px_1fr_150px_100px_120px] items-center bg-muted/50 border-b border-border-table text-xs font-medium text-muted-foreground">
               <span></span>
               <span className="flex items-center gap-1.5 px-3 py-2">
                 <CheckSquare className="w-3.5 h-3.5 shrink-0" />
@@ -374,7 +374,7 @@ function ActionItemRow({ item, index = 0, onClick }: ActionItemRowProps) {
 
   // Alternating row colors
   const isEvenRow = index % 2 === 0;
-  const baseRowColor = isEvenRow ? "bg-white" : "bg-[#F7FDFE]";
+  const baseRowColor = isEvenRow ? "bg-white" : "bg-surface-alt";
 
   // Status icon based on status
   const getStatusIcon = () => {
@@ -399,7 +399,7 @@ function ActionItemRow({ item, index = 0, onClick }: ActionItemRowProps) {
   return (
     <div 
       className={cn(
-        "grid grid-cols-[40px_1fr_150px_100px_120px] items-stretch border-b border-[#e0f2fe] last:border-b-0 transition-colors cursor-pointer",
+        "grid grid-cols-[40px_1fr_150px_100px_120px] items-stretch border-b border-border-table last:border-b-0 transition-colors cursor-pointer",
         baseRowColor
       )}
       onClick={onClick}
@@ -416,7 +416,7 @@ function ActionItemRow({ item, index = 0, onClick }: ActionItemRowProps) {
       <div
         className={cn(
           "flex items-center px-3 py-3 transition-all",
-          hoveredCell === "title" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+          hoveredCell === "title" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
         )}
         onMouseEnter={() => setHoveredCell("title")}
         onMouseLeave={() => setHoveredCell(null)}
@@ -435,7 +435,7 @@ function ActionItemRow({ item, index = 0, onClick }: ActionItemRowProps) {
       <div 
         className={cn(
           "flex items-center gap-2 px-3 py-3 transition-all",
-          hoveredCell === "assignee" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+          hoveredCell === "assignee" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
         )}
         onMouseEnter={() => setHoveredCell("assignee")}
         onMouseLeave={() => setHoveredCell(null)}
@@ -461,7 +461,7 @@ function ActionItemRow({ item, index = 0, onClick }: ActionItemRowProps) {
       <div 
         className={cn(
           "flex items-center px-3 py-3 transition-all",
-          hoveredCell === "dueDate" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+          hoveredCell === "dueDate" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
         )}
         onMouseEnter={() => setHoveredCell("dueDate")}
         onMouseLeave={() => setHoveredCell(null)}
@@ -473,7 +473,7 @@ function ActionItemRow({ item, index = 0, onClick }: ActionItemRowProps) {
       <div 
         className={cn(
           "flex items-center px-3 py-3 transition-all",
-          hoveredCell === "meetingDate" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+          hoveredCell === "meetingDate" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
         )}
         onMouseEnter={() => setHoveredCell("meetingDate")}
         onMouseLeave={() => setHoveredCell(null)}

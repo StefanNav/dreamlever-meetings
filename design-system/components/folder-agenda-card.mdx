@@ -1,0 +1,62 @@
+# Folder Agenda Card
+
+## Purpose
+
+The signature visual component — a 3D folder card that opens on hover to reveal agenda items. This is the project's visual anchor.
+
+## Source
+
+`src/components/ui/folder-agenda-card.tsx`
+
+## Design Tokens
+
+Folder-specific tokens in `globals.css`:
+
+| Token | Purpose |
+|---|---|
+| `--surface` | Paper panel background |
+| `--border-light` | Front panel border |
+| `--text-secondary` | Back panel gradient end |
+| `--folder-paper-border` | Paper panel border |
+| `--folder-agenda-title` | "Agenda Items" heading |
+| `--folder-agenda-text` | Agenda item text |
+| `--folder-agenda-bullet` | Bullet point color |
+| `--folder-focus-ring` | Focus ring color |
+
+## Animation
+
+Uses Framer Motion with extracted variants and spring configs:
+
+- `frontPanelVariants` — Rotates front panel on X-axis
+- `paperVariants` — Slides paper up from behind folder
+- `listContainerVariants` — Stagger-reveals agenda items
+- `reducedMotion*` — Simplified variants for `prefers-reduced-motion`
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `departmentLabel` | `string` | — | Folder title |
+| `agendaTitle` | `string` | `"Agenda Items"` | Paper heading |
+| `agendaItems` | `string[]` | — | List of items |
+| `count` | `number` | — | Item count display |
+| `avatars` | `Array<{id, name, avatar?}>` | — | Participant avatars |
+| `cadence` | `string` | — | Meeting frequency |
+| `href` | `string` | `"#"` | Link target |
+
+## States
+
+- **Closed**: Flat folder with label and avatar stack
+- **Open (hover/focus)**: Front panel tilts, paper slides up revealing agenda
+- **Scrollable**: Long agenda lists can be drag-scrolled
+
+## Accessibility
+
+- `role="article"` with descriptive `aria-label`
+- Keyboard focusable (`tabIndex={0}`)
+- Focus triggers open state (same as hover)
+- Reduced motion variant respects system preference
+
+## Storybook
+
+Not yet added — complex component requiring mock data setup.

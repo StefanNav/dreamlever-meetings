@@ -89,7 +89,7 @@ function LogoToggle({ isCollapsed }: { isCollapsed: boolean }) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.15 }}
-                className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4DD0E1] to-[#26C6DA] flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-gradient-start to-brand-gradient-end flex items-center justify-center"
               >
                 <Image
                   src="/miles-logo.png"
@@ -109,7 +109,7 @@ function LogoToggle({ isCollapsed }: { isCollapsed: boolean }) {
   // When expanded, show logo and close button side by side with smooth animation
   return (
     <div className="flex items-center justify-between w-full">
-      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4DD0E1] to-[#26C6DA] flex items-center justify-center shrink-0">
+      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-gradient-start to-brand-gradient-end flex items-center justify-center shrink-0">
         <Image
           src="/miles-logo.png"
           alt="Miles"

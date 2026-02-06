@@ -149,7 +149,7 @@ export default function NotificationsPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-semibold text-[#2D4A50]">
+            <h1 className="text-2xl font-semibold text-heading-1">
               Notifications
             </h1>
             {unreadCount > 0 && (
@@ -183,8 +183,8 @@ export default function NotificationsPage() {
 
         {/* Bulk Actions */}
         {selectedIds.size > 0 && (
-          <div className="flex items-center gap-3 mb-4 p-3 bg-[#FCFCFC] rounded-xl border border-[#E6E6E6]">
-            <span className="text-sm text-[#6D9097]">
+          <div className="flex items-center gap-3 mb-4 p-3 bg-surface rounded-xl border border-border-light">
+            <span className="text-sm text-text-secondary">
               {selectedIds.size} selected
             </span>
             <div className="flex items-center gap-2 ml-auto">

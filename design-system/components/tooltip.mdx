@@ -1,0 +1,46 @@
+# Tooltip
+
+## Purpose
+
+Contextual help text shown on hover. Built with CVA for position variants.
+
+## Source
+
+`src/components/ui/tooltip.tsx`
+
+## Variants
+
+| Position | Placement | Arrow direction |
+|---|---|---|
+| `top` | Above trigger, centered | Points down |
+| `bottom` | Below trigger, centered | Points up |
+| `left` | Left of trigger, centered | Points right |
+| `right` | Right of trigger, centered | Points left |
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `content` | `string` | — | Tooltip text |
+| `position` | `"top" \| "bottom" \| "left" \| "right"` | `"top"` | Placement |
+| `className` | `string` | — | Additional classes on wrapper |
+
+## Tokens Used
+
+- `bg-foreground` for tooltip background
+- `text-white` for tooltip text
+- Arrow inherits foreground color
+
+## States
+
+- **Hidden**: `opacity-0` (default)
+- **Visible**: `opacity-100` on `group-hover`
+
+## Accessibility
+
+- Uses CSS-only hover (no focus trap)
+- Consider adding `aria-describedby` for screen readers on trigger elements
+
+## Storybook
+
+[Tooltip stories](http://localhost:6006/?path=/docs/ui-tooltip--docs)

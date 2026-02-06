@@ -1,0 +1,36 @@
+# Card
+
+## Purpose
+
+Container for grouping related content with consistent styling.
+
+## Source
+
+`src/components/ui/card.tsx`
+
+## Sub-components
+
+- `Card` — Root container (`bg-card`, rounded, border, shadow)
+- `CardHeader` — Title + description area
+- `CardTitle` — Bold heading
+- `CardDescription` — Muted text below title
+- `CardAction` — Right-aligned action in header
+- `CardContent` — Main content area
+- `CardFooter` — Bottom action bar
+
+## Tokens Used
+
+| Token | Class | Purpose |
+|---|---|---|
+| `--card` | `bg-card` | Background |
+| `--card-foreground` | `text-card-foreground` | Text color |
+| `--border` | `border` | Card border |
+
+## States
+
+- **Default**: Standard card appearance
+- No interactive states (interaction is on child elements)
+
+## Storybook
+
+[Card stories](http://localhost:6006/?path=/docs/ui-card--docs)

@@ -113,22 +113,20 @@ export function AllMeetingsSection({ initialMeetings }: AllMeetingsSectionProps)
       {/* Sticky Header with Title and Tab Bar */}
       <div ref={headerRef} className="sticky top-0 z-20 bg-background pb-3 pt-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-semibold text-foreground">All Meetings</h2>
-          <Button
-            variant="outline"
-            className="gap-2 rounded-full"
+          <h2 className="text-3xl font-semibold text-heading-1">All Meetings</h2>
+          <button
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-gradient-to-b from-white to-surface-filter border border-border-light text-heading-1 hover:text-cyan hover:bg-cyan-light/50 shadow-[0_2px_4px_0_rgba(63,140,156,0.15)] transition-all duration-200"
             onClick={() => setIsAiSettingsOpen(true)}
           >
             <Settings className="w-4 h-4" />
             AI Settings
-          </Button>
+          </button>
         </div>
         {/* Tab bar - fills width with calendar inside */}
         <div 
           className={`transition-all duration-200 ${
-            isSticky ? "pb-3 border-b" : ""
+            isSticky ? "pb-3 border-b border-border-light" : ""
           }`}
-          style={isSticky ? { borderColor: 'rgba(0,0,0,0.06)' } : undefined}
         >
           <MeetingListFilter 
             activeFilter={visibleSection} 
@@ -151,16 +149,7 @@ export function AllMeetingsSection({ initialMeetings }: AllMeetingsSectionProps)
             <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
               <PopoverTrigger asChild>
                 <button
-                  className="w-9 h-9 flex items-center justify-center rounded-[10px] bg-white border text-[#6B7280] hover:text-[#111827] transition-all"
-                  style={{ 
-                    borderColor: 'rgba(0,0,0,0.06)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.boxShadow = '0 1px 2px rgba(0,0,0,0.10)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
+                  className="w-9 h-9 flex items-center justify-center rounded-lg bg-white border border-border-light text-text-secondary hover:text-cyan hover:bg-cyan-light/50 transition-all duration-200"
                   aria-label="Select date"
                 >
                   <Calendar className="w-4 h-4" />

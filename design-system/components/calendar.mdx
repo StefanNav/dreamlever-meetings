@@ -1,0 +1,44 @@
+# Calendar
+
+## Purpose
+
+Date picker component for selecting single dates. Built on `react-day-picker`.
+
+## Source
+
+`src/components/ui/calendar.tsx`
+
+## Tokens Used
+
+- Navigation buttons use `buttonVariants({ variant: "outline" | "ghost" })`
+- Selected day: `bg-primary text-primary-foreground`
+- Today: `bg-accent text-accent-foreground`
+- Range: `bg-accent` for intermediate days
+
+## Props
+
+Extends `react-day-picker` `DayPicker` props. Common usage:
+
+| Prop | Type | Description |
+|---|---|---|
+| `mode` | `"single"` | Selection mode |
+| `selected` | `Date \| undefined` | Currently selected date |
+| `onSelect` | `(date: Date \| undefined) => void` | Selection handler |
+
+## States
+
+- **Default**: Current month displayed
+- **Date selected**: Primary-colored highlight
+- **Today**: Accent-colored highlight
+- **Disabled dates**: Reduced opacity
+- **Navigation**: Previous/next month arrows
+
+## Accessibility
+
+- Keyboard navigation: arrow keys to move between days
+- `aria-selected` on chosen date
+- Labelled month/year header
+
+## Storybook
+
+[Calendar stories](http://localhost:6006/?path=/docs/ui-calendar--docs)

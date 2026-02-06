@@ -1,0 +1,36 @@
+# Popover
+
+## Purpose
+
+Floating content panel triggered by a button. Built on Radix Popover primitive.
+
+## Source
+
+`src/components/ui/popover.tsx`
+
+## Sub-components
+
+- `Popover` — Root context provider
+- `PopoverTrigger` — Element that opens the popover (accepts `asChild`)
+- `PopoverContent` — Floating panel with arrow
+
+## Default Styling
+
+- `bg-popover text-popover-foreground` background
+- `border`, `rounded-md`, `shadow-md`
+- Auto-positioned with Radix Floating UI
+
+## States
+
+- **Closed**: Hidden, trigger visible
+- **Open**: Content panel visible with arrow pointing to trigger
+- **Focus trapped**: Tab stays within popover content
+
+## Accessibility
+
+- Radix handles `aria-expanded`, focus management, and Escape to close
+- Content positioned via `@radix-ui/react-popover` portal
+
+## Storybook
+
+[Popover stories](http://localhost:6006/?path=/docs/ui-popover--docs)

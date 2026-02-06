@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { scaleDialog } from "@/lib/animation";
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -70,7 +71,7 @@ export function ConfirmDialog({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
+            transition={scaleDialog}
             className="fixed inset-0 bg-black/50 z-[60]"
             onClick={onClose}
             aria-hidden="true"
@@ -81,7 +82,7 @@ export function ConfirmDialog({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.15 }}
+            transition={scaleDialog}
             className="fixed inset-0 z-[61] flex items-center justify-center p-4"
             role="dialog"
             aria-modal="true"

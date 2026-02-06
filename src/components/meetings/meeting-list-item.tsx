@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { expandCollapse } from "@/lib/animation";
 import { Calendar, Clock, Users, ChevronDown, ChevronUp, Plus, X } from "lucide-react";
 import { Meeting } from "@/types/meetings";
 import { Switch } from "@/components/ui/switch";
@@ -14,12 +15,13 @@ import { cn } from "@/lib/utils";
 
 // Mock department agendas data
 const departmentAgendas = [
-  { id: "1", name: "Operations", color: "#7a5af8", bgColor: "rgba(122, 90, 248, 0.1)", textColor: "#7a5af8" },
-  { id: "2", name: "Engineering", color: "#3b82f6", bgColor: "rgba(59, 130, 246, 0.1)", textColor: "#3b82f6" },
-  { id: "3", name: "Design", color: "#ec4899", bgColor: "rgba(236, 72, 153, 0.1)", textColor: "#ec4899" },
-  { id: "4", name: "Marketing", color: "#f97316", bgColor: "rgba(249, 115, 22, 0.1)", textColor: "#f97316" },
-  { id: "5", name: "Sales", color: "#22c55e", bgColor: "rgba(34, 197, 94, 0.1)", textColor: "#22c55e" },
-  { id: "6", name: "Product", color: "#d4a024", bgColor: "rgba(212, 160, 36, 0.1)", textColor: "#b8901c" },
+  { id: "1", name: "Operations", color: "var(--operations)", bgColor: "var(--operations-bg)", textColor: "var(--operations)" },
+  { id: "2", name: "Engineering", color: "var(--engineering)", bgColor: "var(--engineering-bg)", textColor: "var(--engineering)" },
+  { id: "3", name: "Design", color: "var(--design)", bgColor: "var(--design-bg)", textColor: "var(--design)" },
+  { id: "4", name: "Marketing", color: "var(--marketing)", bgColor: "var(--marketing-bg)", textColor: "var(--marketing)" },
+  { id: "5", name: "Sales", color: "var(--sales)", bgColor: "var(--sales-bg)", textColor: "var(--sales)" },
+  // TODO: Product uses operations colors as a placeholder until a dedicated --product token is added
+  { id: "6", name: "Product", color: "var(--operations)", bgColor: "var(--operations-bg)", textColor: "var(--operations)" },
 ];
 
 interface MeetingListItemProps {
@@ -203,7 +205,7 @@ export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
+            transition={expandCollapse}
             className="overflow-hidden"
           >
             <div className="px-5 pb-4">

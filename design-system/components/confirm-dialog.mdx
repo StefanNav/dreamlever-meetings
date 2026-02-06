@@ -1,0 +1,52 @@
+# Confirm Dialog
+
+## Purpose
+
+Modal confirmation prompt for destructive or important actions.
+
+## Source
+
+`src/components/ui/confirm-dialog.tsx`
+
+## Variants
+
+| Variant | Appearance | Usage |
+|---|---|---|
+| `default` | Standard dialog | General confirmations |
+| `danger` | Red warning icon + destructive button | Delete/irreversible actions |
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `isOpen` | `boolean` | — | Controls visibility |
+| `onClose` | `() => void` | — | Close handler |
+| `onConfirm` | `() => void` | — | Confirm handler |
+| `title` | `string` | — | Dialog heading |
+| `description` | `string` | — | Explanatory text |
+| `confirmLabel` | `string` | `"Confirm"` | Confirm button text |
+| `cancelLabel` | `string` | `"Cancel"` | Cancel button text |
+| `variant` | `"danger" \| "default"` | `"default"` | Visual style |
+| `isLoading` | `boolean` | `false` | Disables buttons, shows loading |
+
+## Animation
+
+Uses shared `scaleDialog` transition from `src/lib/animation.ts`. Backdrop fades, dialog scales in.
+
+## States
+
+- **Closed**: Not rendered
+- **Open**: Focused on cancel button, backdrop blocks interaction
+- **Loading**: Both buttons disabled, confirm shows spinner text
+
+## Accessibility
+
+- `role="dialog"`, `aria-modal="true"`
+- `aria-labelledby` and `aria-describedby` link to title/description
+- Cancel button receives initial focus
+- Escape key closes dialog
+- Body scroll locked while open
+
+## Storybook
+
+[ConfirmDialog stories](http://localhost:6006/?path=/docs/ui-confirmdialog--docs)

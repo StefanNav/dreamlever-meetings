@@ -1,0 +1,41 @@
+# Category Badge
+
+## Purpose
+
+Colored label indicating a meeting department/category. Built with CVA.
+
+## Source
+
+`src/components/meetings/category-badge.tsx`
+
+## Variants
+
+| Category | Text Token | Background Token | Example |
+|---|---|---|---|
+| `operations` | `--operations` | `--operations-bg` | Teal |
+| `design` | `--design` | `--design-bg` | Pink |
+| `engineering` | `--engineering` | `--engineering-bg` | Green |
+| `marketing` | `--marketing` | `--marketing-bg` | Blue |
+| `sales` | `--sales` | `--sales-bg` | Orange |
+
+Each variant applies `bg-{category}-bg text-{category} border-{category}`.
+
+## Props
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `category` | `MeetingCategory` | Yes | Department identifier |
+| `className` | `string` | No | Additional classes |
+
+## Dark Mode
+
+All category tokens have dark mode overrides that lighten the text color and darken the background for contrast on dark surfaces.
+
+## Accessibility
+
+- Color-coded with matching text label — not color-only
+- Rendered as `<span>` — non-interactive
+
+## Storybook
+
+[CategoryBadge stories](http://localhost:6006/?path=/docs/meetings-categorybadge--docs)

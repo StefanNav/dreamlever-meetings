@@ -82,13 +82,13 @@ export function NotificationList({
   if (notifications.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 px-4">
-        <div className="w-16 h-16 rounded-full bg-[#FCFCFC] border border-[#E6E6E6] flex items-center justify-center mb-4">
-          <Inbox className="w-8 h-8 text-[#6D9097]" />
+        <div className="w-16 h-16 rounded-full bg-surface border border-border-light flex items-center justify-center mb-4">
+          <Inbox className="w-8 h-8 text-text-secondary" />
         </div>
-        <p className="text-lg font-medium text-[#2D4A50] mb-1">
+        <p className="text-lg font-medium text-heading-1 mb-1">
           No notifications
         </p>
-        <p className="text-sm text-[#6D9097] text-center">
+        <p className="text-sm text-text-secondary text-center">
           You&apos;re all caught up! Check back later for new updates.
         </p>
       </div>
@@ -96,9 +96,9 @@ export function NotificationList({
   }
 
   return (
-    <div className="border border-[#E6E6E6] rounded-xl overflow-hidden bg-[#FCFCFC]">
+    <div className="border border-border-light rounded-xl overflow-hidden bg-surface">
       {/* Select All Header */}
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-[#E6E6E6] bg-white/50">
+      <div className="flex items-center gap-3 px-4 py-3 border-b border-border-light bg-white/50">
         <input
           type="checkbox"
           checked={allSelected}
@@ -106,9 +106,9 @@ export function NotificationList({
             if (el) el.indeterminate = someSelected;
           }}
           onChange={(e) => onSelectAll(e.target.checked)}
-          className="w-4 h-4 rounded border-[#E6E6E6] text-cyan focus:ring-cyan cursor-pointer"
+          className="w-4 h-4 rounded border-border-light text-cyan focus:ring-cyan cursor-pointer"
         />
-        <span className="text-sm text-[#6D9097]">
+        <span className="text-sm text-text-secondary">
           {selectedIds.size > 0
             ? `${selectedIds.size} selected`
             : `${notifications.length} notifications`}
@@ -118,12 +118,12 @@ export function NotificationList({
       {/* Grouped Notifications */}
       {groups.map((group) => (
         <div key={group.label}>
-          <div className="px-4 py-2 bg-[#F0F0F0] border-b border-[#E6E6E6]">
-            <span className="text-xs font-semibold text-[#6D9097] uppercase tracking-wider">
+          <div className="px-4 py-2 bg-surface-filter border-b border-border-light">
+            <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
               {group.label}
             </span>
           </div>
-          <div className="divide-y divide-[#E6E6E6]">
+          <div className="divide-y divide-border-light">
             {group.notifications.map((notification) => (
               <NotificationItem
                 key={notification.id}

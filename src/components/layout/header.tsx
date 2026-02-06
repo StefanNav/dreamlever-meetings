@@ -5,7 +5,7 @@ import Image from "next/image";
 
 function MileAiButton() {
   return (
-    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#4DD0E1] to-[#26C6DA] flex items-center justify-center shadow-md cursor-pointer hover:shadow-lg hover:opacity-90 transition-all">
+    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-gradient-start to-brand-gradient-end flex items-center justify-center shadow-md cursor-pointer hover:shadow-lg hover:opacity-90 transition-all">
       <Image
         src="/miles-logo.png"
         alt="Miles AI"
@@ -21,8 +21,8 @@ export function Header() {
   return (
     <header className="flex items-center justify-between py-6">
       <div className="flex items-center gap-3">
-        <Calendar className="w-7 h-7 text-[#2D4A50]" />
-        <h1 className="text-3xl font-semibold text-[#2D4A50]">Recurring meetings</h1>
+        <Calendar className="w-7 h-7 text-heading-1" />
+        <h1 className="text-3xl font-semibold text-heading-1">Recurring meetings</h1>
       </div>
       <div className="flex items-center gap-4">
         <button

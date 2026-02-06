@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { springDrawer, fadeFast } from "@/lib/animation";
 import { ChevronsRight, Paperclip, Link2, MoreHorizontal, Bot, ChevronRight, Home } from "lucide-react";
 import { Meeting } from "@/types/meetings";
 import Image from "next/image";
@@ -105,7 +106,7 @@ export function MeetingSummaryDrawer({ meeting, isOpen, onClose }: MeetingSummar
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={fadeFast}
             className="fixed inset-0 bg-black/40 z-40"
             onClick={onClose}
           />
@@ -115,7 +116,7 @@ export function MeetingSummaryDrawer({ meeting, isOpen, onClose }: MeetingSummar
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            transition={springDrawer}
             className="fixed right-0 top-0 h-full w-full max-w-xl bg-white shadow-2xl z-50 flex flex-col"
           >
             {/* Top Bar */}
@@ -161,7 +162,7 @@ export function MeetingSummaryDrawer({ meeting, isOpen, onClose }: MeetingSummar
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span>Created by</span>
                 <div className="flex items-center gap-1.5">
-                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#4DD0E1] to-[#26C6DA] flex items-center justify-center">
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-brand-gradient-start to-brand-gradient-end flex items-center justify-center">
                     <Image
                       src="/miles-logo.png"
                       alt="Miles"

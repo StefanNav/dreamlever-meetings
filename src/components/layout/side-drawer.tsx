@@ -112,7 +112,7 @@ export function SideDrawer({ defaultOpen = false }: SideDrawerProps) {
           >
             {/* Header with Logo and Close Button */}
             <div className="flex items-center justify-between px-4 py-4">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4DD0E1] to-[#26C6DA] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-gradient-start to-brand-gradient-end flex items-center justify-center">
                 <Image
                   src="/miles-logo.png"
                   alt="Miles"

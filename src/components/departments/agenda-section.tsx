@@ -63,7 +63,7 @@ export function AgendaSection({
         </div>
 
         {/* Column Headers - 7 grid children */}
-        <div className={`${AGENDA_GRID_ROW} bg-muted/50 border-b border-[#e0f2fe] text-xs font-medium text-muted-foreground`}>
+        <div className={`${AGENDA_GRID_ROW} bg-muted/50 border-b border-border-table text-xs font-medium text-muted-foreground`}>
           {/* [expand] */}
           <div></div>
           {/* [item] */}

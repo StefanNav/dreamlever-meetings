@@ -25,7 +25,7 @@ export function AgendaItemRow({ item, index = 0, onItemClick }: AgendaItemRowPro
 
   return (
     <div 
-      className="border-b border-[#e0f2fe] last:border-b-0 transition-colors bg-white"
+      className="border-b border-border-table last:border-b-0 transition-colors bg-white"
       data-agenda-item-id={item.id}
       id={`agenda-item-${item.id}`}
       onMouseEnter={() => setIsRowHovered(true)}
@@ -57,7 +57,7 @@ export function AgendaItemRow({ item, index = 0, onItemClick }: AgendaItemRowPro
         <div 
           className={cn(
             `flex items-center ${AGENDA_CELL_PADDING} transition-all`,
-            hoveredCell === "title" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+            hoveredCell === "title" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
           )}
           onMouseEnter={() => setHoveredCell("title")}
           onMouseLeave={() => setHoveredCell(null)}
@@ -69,7 +69,7 @@ export function AgendaItemRow({ item, index = 0, onItemClick }: AgendaItemRowPro
         <div 
           className={cn(
             `flex items-center gap-2 ${AGENDA_CELL_PADDING} transition-all`,
-            hoveredCell === "createdBy" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+            hoveredCell === "createdBy" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
           )}
           onMouseEnter={() => setHoveredCell("createdBy")}
           onMouseLeave={() => setHoveredCell(null)}
@@ -89,7 +89,7 @@ export function AgendaItemRow({ item, index = 0, onItemClick }: AgendaItemRowPro
         <div 
           className={cn(
             `flex items-center ${AGENDA_CELL_PADDING} transition-all`,
-            hoveredCell === "time" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+            hoveredCell === "time" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
           )}
           onMouseEnter={() => setHoveredCell("time")}
           onMouseLeave={() => setHoveredCell(null)}
@@ -101,7 +101,7 @@ export function AgendaItemRow({ item, index = 0, onItemClick }: AgendaItemRowPro
         <div 
           className={cn(
             `flex items-center ${AGENDA_CELL_PADDING} transition-all`,
-            hoveredCell === "description" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+            hoveredCell === "description" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
           )}
           onMouseEnter={() => setHoveredCell("description")}
           onMouseLeave={() => setHoveredCell(null)}
@@ -113,7 +113,7 @@ export function AgendaItemRow({ item, index = 0, onItemClick }: AgendaItemRowPro
         <div 
           className={cn(
             `flex items-center ${AGENDA_CELL_PADDING} transition-all`,
-            hoveredCell === "notes" ? "shadow-[inset_0_0_0_1px_#67e8f9]" : ""
+            hoveredCell === "notes" ? "shadow-[inset_0_0_0_1px_var(--highlight-hover)]" : ""
           )}
           onMouseEnter={() => setHoveredCell("notes")}
           onMouseLeave={() => setHoveredCell(null)}

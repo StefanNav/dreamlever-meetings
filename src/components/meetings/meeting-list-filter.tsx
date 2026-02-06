@@ -21,34 +21,23 @@ export function MeetingListFilter({
   children,
 }: MeetingListFilterProps) {
   return (
-    <div 
-      className="h-12 w-full flex items-center p-1.5 rounded-[14px] border"
-      style={{ 
-        backgroundColor: '#F6F7F9',
-        borderColor: 'rgba(0,0,0,0.06)'
-      }}
-    >
+    <div className="flex items-center gap-1.5 p-1.5 bg-surface border border-border-light rounded-xl">
       {/* Tab buttons */}
-      <div className="flex items-center">
-        {filters.map((filter) => (
-          <button
-            key={filter.value}
-            onClick={() => onFilterChange(filter.value)}
-            className={cn(
-              "px-4 py-2 text-sm rounded-[10px] transition-all",
-              activeFilter === filter.value
-                ? "bg-white text-[#111827] font-semibold"
-                : "bg-transparent text-[#6B7280] font-normal hover:text-[#111827]"
-            )}
-            style={activeFilter === filter.value ? {
-              boxShadow: '0 1px 2px rgba(0,0,0,0.10)'
-            } : undefined}
-          >
-            {filter.label}
-          </button>
-        ))}
-      </div>
-      
+      {filters.map((filter) => (
+        <button
+          key={filter.value}
+          onClick={() => onFilterChange(filter.value)}
+          className={cn(
+            "px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg",
+            activeFilter === filter.value
+              ? "bg-gradient-to-b from-white to-surface-filter text-heading-1 shadow-[0_2px_4px_0_rgba(63,140,156,0.15)] border border-border-light"
+              : "text-text-secondary hover:text-cyan hover:bg-cyan-light/50"
+          )}
+        >
+          {filter.label}
+        </button>
+      ))}
+
       {/* Right side content (calendar, date badge, etc.) */}
       {children && (
         <div className="ml-auto flex items-center gap-2">
