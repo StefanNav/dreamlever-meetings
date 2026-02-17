@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DreamLever Design System — Token Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════════
+       Design tokens (mirrors globals.css)
+       ═══════════════════════════════════════════════ */
+    :root {
+      --brand-primary: #00bcd4;
+      --brand-primary-light: #e0f7fa;
+      --brand-primary-dark: #00838f;
+      --brand-gradient-start: #4DD0E1;
+      --brand-gradient-end: #26C6DA;
+
+      --radius: 0.625rem;
+
+      --background: #ffffff;
+      --foreground: #1a1a2e;
+      --card: #ffffff;
+      --card-foreground: #1a1a2e;
+      --primary: var(--brand-primary);
+      --primary-foreground: #ffffff;
+      --secondary: #f5f5f5;
+      --secondary-foreground: #1a1a2e;
+      --muted: #f8f9fa;
+      --muted-foreground: #6b7280;
+      --accent: var(--brand-primary-light);
+      --accent-foreground: var(--brand-primary-dark);
+      --destructive: #ef4444;
+      --border: #e5e7eb;
+      --input: #e5e7eb;
+      --ring: var(--brand-primary);
+
+      --cyan: var(--brand-primary);
+      --cyan-light: var(--brand-primary-light);
+      --cyan-dark: var(--brand-primary-dark);
+
+      --heading-1: #2D4A50;
+      --heading-2: #2D4A50;
+      --text-secondary: #6D9097;
+
+      --surface: #FCFCFC;
+      --surface-alt: #F7FDFE;
+      --surface-filter: #F6F7F9;
+
+      --border-light: #E6E6E6;
+      --border-table: #e0f2fe;
+      --highlight-hover: #67e8f9;
+
+      --folder-paper-border: #D1D1D1;
+      --folder-agenda-title: #7a7a7a;
+      --folder-agenda-text: #4a4a4a;
+      --folder-agenda-bullet: #b0b0b0;
+      --folder-focus-ring: #7161d1;
+
+      --operations: #00838f;
+      --operations-bg: #e0f7fa;
+      --design: #d81b60;
+      --design-bg: #fce4ec;
+      --engineering: #00897b;
+      --engineering-bg: #e0f2f1;
+      --marketing: #1e88e5;
+      --marketing-bg: #e3f2fd;
+      --sales: #f4511e;
+      --sales-bg: #fbe9e7;
+
+      --live: #4caf50;
+      --live-bg: #e8f5e9;
+      --recurring: #ff9800;
+      --recurring-bg: #fff3e0;
+    }
+
+    .dark {
+      --background: #1a1a2e;
+      --foreground: #f8f9fa;
+      --card: #262640;
+      --card-foreground: #f8f9fa;
+      --primary: var(--brand-primary);
+      --primary-foreground: #ffffff;
+      --secondary: #3d3d5c;
+      --secondary-foreground: #f8f9fa;
+      --muted: #3d3d5c;
+      --muted-foreground: #9ca3af;
+      --accent: #1a3a3d;
+      --accent-foreground: var(--brand-primary);
+      --destructive: #ef4444;
+      --border: #3d3d5c;
+      --input: #3d3d5c;
+      --ring: var(--brand-primary);
+
+      --cyan-light: #1a3a3d;
+      --cyan-dark: #4dd0e1;
+
+      --heading-1: #e0f2f1;
+      --heading-2: #e0f2f1;
+      --text-secondary: #8faab0;
+
+      --surface: #2a2a45;
+      --surface-alt: #1e2e35;
+      --surface-filter: #33334d;
+
+      --border-light: #3d3d5c;
+      --border-table: #1a3a4d;
+      --highlight-hover: #0e7490;
+
+      --folder-paper-border: #4a4a6a;
+      --folder-agenda-title: #9ca3af;
+      --folder-agenda-text: #d1d5db;
+      --folder-agenda-bullet: #6b7280;
+      --folder-focus-ring: #8b7cf7;
+
+      --operations: #4dd0e1;
+      --operations-bg: #0d2f33;
+      --design: #f06292;
+      --design-bg: #3d1a2a;
+      --engineering: #4db6ac;
+      --engineering-bg: #1a3330;
+      --marketing: #64b5f6;
+      --marketing-bg: #1a2a3d;
+      --sales: #ff8a65;
+      --sales-bg: #3d2420;
+
+      --live: #81c784;
+      --live-bg: #1b3320;
+      --recurring: #ffb74d;
+      --recurring-bg: #3d2e1a;
+    }
+
+    /* ═══════════════════════════════════════════════
+       Base & layout
+       ═══════════════════════════════════════════════ */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      min-height: 100vh;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--brand-gradient-start), var(--brand-gradient-end));
+    }
+    .logo-text {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--heading-1);
+    }
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--foreground);
+      font-family: inherit;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .theme-toggle:hover {
+      background: var(--surface-alt);
+      border-color: var(--border-light);
+    }
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Section titles */
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--heading-1);
+      margin: 0 0 0.25rem;
+    }
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+      margin: 0 0 2rem;
+    }
+    .section {
+      margin-bottom: 3rem;
+    }
+    .section-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--heading-2);
+      margin: 0 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    /* Token grid */
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+    .token-swatch {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .token-swatch .swatch {
+      height: 56px;
+      width: 100%;
+    }
+    .token-swatch .label {
+      padding: 0.5rem 0.6rem;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      word-break: break-all;
+    }
+    .token-swatch .label strong {
+      display: block;
+      color: var(--foreground);
+      margin-bottom: 0.15rem;
+    }
+
+    /* Typography samples */
+    .type-sample {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .type-sample h3 {
+      margin: 0 0 0.35em;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--heading-2);
+    }
+    .type-sample .heading-1 { font-size: 1.5rem; font-weight: 700; color: var(--heading-1); margin: 0; }
+    .type-sample .heading-2 { font-size: 1.25rem; font-weight: 600; color: var(--heading-2); margin: 0; }
+    .type-sample .text-secondary { font-size: 0.9375rem; color: var(--text-secondary); margin: 0; }
+    .type-sample .body { color: var(--foreground); margin: 0; }
+
+    /* Buttons (visual only) */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: calc(var(--radius) - 2px);
+      border: none;
+      cursor: default;
+      transition: opacity 0.15s;
+    }
+    .btn-default { background: var(--primary); color: var(--primary-foreground); }
+    .btn-destructive { background: var(--destructive); color: white; }
+    .btn-outline { background: var(--background); color: var(--foreground); border: 1px solid var(--input); }
+    .btn-secondary { background: var(--secondary); color: var(--secondary-foreground); }
+    .btn-ghost { background: transparent; color: var(--foreground); }
+    .btn-ghost:hover { background: var(--muted); }
+
+    /* Badges */
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      border-radius: 4px;
+    }
+    .badge-operations { background: var(--operations-bg); color: var(--operations); }
+    .badge-design { background: var(--design-bg); color: var(--design); }
+    .badge-engineering { background: var(--engineering-bg); color: var(--engineering); }
+    .badge-marketing { background: var(--marketing-bg); color: var(--marketing); }
+    .badge-sales { background: var(--sales-bg); color: var(--sales); }
+    .badge-live { background: var(--live-bg); color: var(--live); }
+    .badge-recurring { background: var(--recurring-bg); color: var(--recurring); }
+
+    /* Folder card sample */
+    .folder-sample {
+      background: var(--surface);
+      border: 1px solid var(--folder-paper-border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      max-width: 320px;
+    }
+    .folder-sample .folder-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--folder-agenda-title);
+      margin: 0 0 0.5rem;
+    }
+    .folder-sample ul {
+      margin: 0;
+      padding-left: 1rem;
+      color: var(--folder-agenda-text);
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    .folder-sample li::marker {
+      color: var(--folder-agenda-bullet);
+    }
+
+    /* Surfaces row */
+    .surface-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .surface-box {
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      font-size: 0.8125rem;
+      color: var(--foreground);
+    }
+    .surface-box .name {
+      font-weight: 600;
+      color: var(--heading-2);
+      margin-bottom: 0.25rem;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon" aria-hidden="true"></div>
+        <span class="logo-text">DreamLever Design System</span>
+      </div>
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" style="display: none;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+        <span id="theme-label">Dark mode</span>
+      </button>
+    </header>
+
+    <h1>Token Showcase</h1>
+    <p class="subtitle">Code is the source of truth. Tokens live in <code>src/app/globals.css</code> and are mapped to Tailwind v4. Toggle dark mode to see overrides.</p>
+
+    <section class="section">
+      <h2 class="section-title">Brand primitives</h2>
+      <p style="margin: 0 0 1rem; color: var(--text-secondary); font-size: 0.9375rem;">Raw palette values; single source for primary and gradients.</p>
+      <div class="token-grid">
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--brand-primary);"></div>
+          <div class="label"><strong>--brand-primary</strong> #00bcd4</div>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--brand-primary-light);"></div>
+          <div class="label"><strong>--brand-primary-light</strong></div>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--brand-primary-dark);"></div>
+          <div class="label"><strong>--brand-primary-dark</strong></div>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background: linear-gradient(135deg, var(--brand-gradient-start), var(--brand-gradient-end));"></div>
+          <div class="label"><strong>Gradient</strong> start → end</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Core semantic (shadcn/ui)</h2>
+      <div class="token-grid">
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--background); border: 1px solid var(--border);"></div>
+          <div class="label"><strong>--background</strong></div>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--foreground);"></div>
+          <div class="label"><strong>--foreground</strong></div>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--card);"></div>
+          <div class="label"><strong>--card</strong></div>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--primary);"></div>
+          <div class="label"><strong>--primary</strong></div>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--secondary);"></div>
+          <div class="label"><strong>--secondary</strong></div>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--muted);"></div>
+          <div class="label"><strong>--muted</strong></div>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--accent);"></div>
+          <div class="label"><strong>--accent</strong></div>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--destructive);"></div>
+          <div class="label"><strong>--destructive</strong></div>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background: var(--border);"></div>
+          <div class="label"><strong>--border</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Semantic typography</h2>
+      <div class="type-sample">
+        <h3>Heading 1 (--heading-1)</h3>
+        <p class="heading-1">Page title or section hero</p>
+      </div>
+      <div class="type-sample">
+        <h3>Heading 2 (--heading-2)</h3>
+        <p class="heading-2">Subsection heading</p>
+      </div>
+      <div class="type-sample">
+        <h3>Secondary text (--text-secondary)</h3>
+        <p class="text-secondary">Timestamps, captions, supporting copy</p>
+      </div>
+      <div class="type-sample">
+        <h3>Body (--foreground)</h3>
+        <p class="body">Default body copy uses the foreground token for contrast on background.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Semantic surfaces</h2>
+      <div class="surface-row">
+        <div class="surface-box" style="background: var(--surface);">
+          <div class="name">--surface</div>
+          Card backgrounds, containers
+        </div>
+        <div class="surface-box" style="background: var(--surface-alt);">
+          <div class="name">--surface-alt</div>
+          Alternating rows, subtle contrast
+        </div>
+        <div class="surface-box" style="background: var(--surface-filter);">
+          <div class="name">--surface-filter</div>
+          Filter bars, inactive buttons
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Button variants (token reference)</h2>
+      <div class="button-row">
+        <span class="btn btn-default">Default</span>
+        <span class="btn btn-destructive">Destructive</span>
+        <span class="btn btn-outline">Outline</span>
+        <span class="btn btn-secondary">Secondary</span>
+        <span class="btn btn-ghost">Ghost</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Category badges</h2>
+      <div class="badge-row">
+        <span class="badge badge-operations">Operations</span>
+        <span class="badge badge-design">Design</span>
+        <span class="badge badge-engineering">Engineering</span>
+        <span class="badge badge-marketing">Marketing</span>
+        <span class="badge badge-sales">Sales</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Status badges</h2>
+      <div class="badge-row">
+        <span class="badge badge-live">Live</span>
+        <span class="badge badge-recurring">Recurring</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Folder card tokens</h2>
+      <div class="folder-sample">
+        <div class="folder-title">Agenda (--folder-agenda-title)</div>
+        <ul>
+          <li style="color: var(--folder-agenda-text);">Intro &amp; updates</li>
+          <li style="color: var(--folder-agenda-text);">Discussion items</li>
+          <li style="color: var(--folder-agenda-text);">Action items</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <strong>DreamLever Design System</strong> — Tokens in <code>src/app/globals.css</code>, components in <code>src/components/ui/</code> and <code>src/components/meetings/</code>. Run <code>npm run storybook</code> for the full component library.
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const toggle = document.getElementById('theme-toggle');
+      const label = document.getElementById('theme-label');
+      const iconSun = document.querySelector('.icon-sun');
+      const iconMoon = document.querySelector('.icon-moon');
+
+      function applyTheme(dark) {
+        if (dark) {
+          document.documentElement.classList.add('dark');
+          label.textContent = 'Light mode';
+          if (iconSun) iconSun.style.display = 'none';
+          if (iconMoon) iconMoon.style.display = 'block';
+        } else {
+          document.documentElement.classList.remove('dark');
+          label.textContent = 'Dark mode';
+          if (iconSun) iconSun.style.display = 'block';
+          if (iconMoon) iconMoon.style.display = 'none';
+        }
+      }
+
+      const stored = localStorage.getItem('dreamlever-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initial = stored === 'dark' || (!stored && prefersDark);
+      applyTheme(initial);
+
+      toggle.addEventListener('click', function () {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('dreamlever-theme', isDark ? 'dark' : 'light');
+        label.textContent = isDark ? 'Light mode' : 'Dark mode';
+        if (iconSun) iconSun.style.display = isDark ? 'none' : 'block';
+        if (iconMoon) iconMoon.style.display = isDark ? 'block' : 'none';
+      });
+    })();
+  </script>
+</body>
+</html>

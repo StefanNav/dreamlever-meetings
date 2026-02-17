@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, X, Settings, Check, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Tooltip } from "@/components/ui/tooltip";
 import { useSidebar } from "@/context/sidebar-context";
 import { cn } from "@/lib/utils";
@@ -44,6 +45,8 @@ export function NotificationsDrawer({
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [showSettings, setShowSettings] = useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = useState(false);
   const [preferences, setPreferences] = useState<NotificationPreferences>(
     defaultNotificationPreferences
   );
@@ -120,17 +123,25 @@ export function NotificationsDrawer({
   }, [selectedIds]);
 
   const handleDelete = useCallback((id: string) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      next.delete(id);
-      return next;
-    });
+    setPendingDeleteId(id);
   }, []);
+
+  const confirmDelete = useCallback(() => {
+    if (pendingDeleteId) {
+      setNotifications((prev) => prev.filter((n) => n.id !== pendingDeleteId));
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        next.delete(pendingDeleteId);
+        return next;
+      });
+      setPendingDeleteId(null);
+    }
+  }, [pendingDeleteId]);
 
   const handleDeleteSelected = useCallback(() => {
     setNotifications((prev) => prev.filter((n) => !selectedIds.has(n.id)));
     setSelectedIds(new Set());
+    setShowBulkDeleteConfirm(false);
   }, [selectedIds]);
 
   const handleNavigate = useCallback(() => {
@@ -287,7 +298,7 @@ export function NotificationsDrawer({
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={handleDeleteSelected}
+                          onClick={() => setShowBulkDeleteConfirm(true)}
                           className="h-7 gap-1 text-xs text-destructive hover:text-destructive"
                         >
                           <Trash2 className="w-3 h-3" />
@@ -322,6 +333,28 @@ export function NotificationsDrawer({
         onClose={() => setShowSettings(false)}
         preferences={preferences}
         onSave={handleSavePreferences}
+      />
+
+      {/* Single Delete Confirmation */}
+      <ConfirmDialog
+        isOpen={pendingDeleteId !== null}
+        onClose={() => setPendingDeleteId(null)}
+        onConfirm={confirmDelete}
+        title="Delete notification"
+        description="Are you sure you want to delete this notification? This action cannot be undone."
+        confirmLabel="Delete"
+        variant="danger"
+      />
+
+      {/* Bulk Delete Confirmation */}
+      <ConfirmDialog
+        isOpen={showBulkDeleteConfirm}
+        onClose={() => setShowBulkDeleteConfirm(false)}
+        onConfirm={handleDeleteSelected}
+        title="Delete notifications"
+        description={`Are you sure you want to delete ${selectedIds.size} notification${selectedIds.size === 1 ? "" : "s"}? This action cannot be undone.`}
+        confirmLabel="Delete"
+        variant="danger"
       />
     </>
   );
