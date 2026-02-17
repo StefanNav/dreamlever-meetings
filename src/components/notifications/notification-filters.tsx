@@ -63,45 +63,49 @@ export function NotificationFilters({
         )}
       </div>
 
-      {/* Status & Type Filters - Combined */}
-      <div className="flex items-center gap-1.5 p-1.5 bg-surface border border-border-light rounded-xl w-full">
-        {/* Status Filter - Icon Toggles */}
-        {(["all", "unread", "read"] as NotificationStatusFilter[]).map(
-          (status) => (
-            <Tooltip key={status} content={statusIcons[status].label} position="bottom">
-              <button
-                onClick={() => onStatusChange(status)}
-                className={cn(
-                  "p-2 transition-all duration-200 rounded-lg",
-                  statusFilter === status
-                    ? "bg-gradient-to-b from-white to-surface-filter text-heading-1 shadow-[0_2px_4px_0_rgba(63,140,156,0.15)] border border-border-light"
-                    : "text-text-secondary hover:text-cyan hover:bg-cyan-light/50"
-                )}
-              >
-                {statusIcons[status].icon}
-              </button>
-            </Tooltip>
-          )
-        )}
+      {/* Status & Type Filters */}
+      <div className="flex items-center p-1.5 bg-surface border border-border-light rounded-xl w-full">
+        {/* Status Filter - Icon Toggles (pinned) */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          {(["all", "unread", "read"] as NotificationStatusFilter[]).map(
+            (status) => (
+              <Tooltip key={status} content={statusIcons[status].label} position="bottom">
+                <button
+                  onClick={() => onStatusChange(status)}
+                  className={cn(
+                    "p-2 transition-all duration-200 rounded-lg",
+                    statusFilter === status
+                      ? "bg-gradient-to-b from-white to-surface-filter text-heading-1 shadow-[0_2px_4px_0_rgba(63,140,156,0.15)] border border-border-light"
+                      : "text-text-secondary hover:text-cyan hover:bg-cyan-light/50"
+                  )}
+                >
+                  {statusIcons[status].icon}
+                </button>
+              </Tooltip>
+            )
+          )}
+        </div>
 
         {/* Separator */}
-        <div className="w-px h-6 bg-border-light mx-1" />
+        <div className="w-px h-6 bg-border-light mx-1.5 shrink-0" />
 
-        {/* Type Filter */}
-        {(Object.keys(typeLabels) as NotificationFilterType[]).map((type) => (
-          <button
-            key={type}
-            onClick={() => onTypeChange(type)}
-            className={cn(
-              "px-3 py-1.5 text-xs font-medium transition-all duration-200 rounded-lg",
-              typeFilter === type
-                ? "bg-gradient-to-b from-white to-surface-filter text-heading-1 shadow-[0_2px_4px_0_rgba(63,140,156,0.15)] border border-border-light"
-                : "text-text-secondary hover:text-cyan hover:bg-cyan-light/50"
-            )}
-          >
-            {typeLabels[type]}
-          </button>
-        ))}
+        {/* Type Filter (horizontally scrollable) */}
+        <div className="flex items-center gap-1.5 overflow-x-auto overflow-y-hidden scrollbar-none">
+          {(Object.keys(typeLabels) as NotificationFilterType[]).map((type) => (
+            <button
+              key={type}
+              onClick={() => onTypeChange(type)}
+              className={cn(
+                "px-3 py-1.5 text-xs font-medium transition-all duration-200 rounded-lg whitespace-nowrap shrink-0",
+                typeFilter === type
+                  ? "bg-gradient-to-b from-white to-surface-filter text-heading-1 shadow-[0_2px_4px_0_rgba(63,140,156,0.15)] border border-border-light"
+                  : "text-text-secondary hover:text-cyan hover:bg-cyan-light/50"
+              )}
+            >
+              {typeLabels[type]}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

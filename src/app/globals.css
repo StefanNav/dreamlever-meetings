@@ -361,6 +361,15 @@
   scrollbar-color: var(--muted-foreground) transparent;
 }
 
+/* Hide scrollbar completely while keeping scroll functionality */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
 /* Source highlight for deep-link navigation */
 .source-highlight {
   background-color: #fef3c7 !important; /* yellow-100 */

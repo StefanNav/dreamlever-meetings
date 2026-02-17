@@ -60,6 +60,7 @@ interface NotificationListProps {
   onSelectAll: (selected: boolean) => void;
   onMarkAsRead: (id: string) => void;
   onDelete: (id: string) => void;
+  onNavigate?: () => void;
 }
 
 export function NotificationList({
@@ -69,6 +70,7 @@ export function NotificationList({
   onSelectAll,
   onMarkAsRead,
   onDelete,
+  onNavigate,
 }: NotificationListProps) {
   const groups = useMemo(
     () => groupNotificationsByDate(notifications),
@@ -132,6 +134,7 @@ export function NotificationList({
                 onSelect={onSelect}
                 onMarkAsRead={onMarkAsRead}
                 onDelete={onDelete}
+                onNavigate={onNavigate}
               />
             ))}
           </div>

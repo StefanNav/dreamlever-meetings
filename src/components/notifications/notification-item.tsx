@@ -41,6 +41,7 @@ interface NotificationItemProps {
   onSelect: (id: string, selected: boolean) => void;
   onMarkAsRead: (id: string) => void;
   onDelete: (id: string) => void;
+  onNavigate?: () => void;
 }
 
 export function NotificationItem({
@@ -49,6 +50,7 @@ export function NotificationItem({
   onSelect,
   onMarkAsRead,
   onDelete,
+  onNavigate,
 }: NotificationItemProps) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -151,7 +153,11 @@ export function NotificationItem({
 
   if (notification.link) {
     return (
-      <Link href={notification.link} className="block">
+      <Link
+        href={notification.link}
+        className="block"
+        onClick={() => onNavigate?.()}
+      >
         {content}
       </Link>
     );
