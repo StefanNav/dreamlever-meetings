@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { expandCollapse } from "@/lib/animation";
-import { Calendar, Clock, Users, ChevronDown, ChevronUp, Plus, X } from "lucide-react";
+import { Calendar, Clock, Users, ChevronDown, ChevronUp, Plus, X, Search } from "lucide-react";
+import Link from "next/link";
 import { Meeting } from "@/types/meetings";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -13,16 +14,14 @@ import { StatusBadge } from "./status-badge";
 import { MeetingSummaryDrawer } from "./meeting-summary-drawer";
 import { cn } from "@/lib/utils";
 
-// Mock department agendas data
 const departmentAgendas = [
-  { id: "1", name: "Operations", color: "var(--operations)", bgColor: "var(--operations-bg)", textColor: "var(--operations)" },
-  { id: "2", name: "Engineering", color: "var(--engineering)", bgColor: "var(--engineering-bg)", textColor: "var(--engineering)" },
-  { id: "3", name: "Design", color: "var(--design)", bgColor: "var(--design-bg)", textColor: "var(--design)" },
-  { id: "4", name: "Marketing", color: "var(--marketing)", bgColor: "var(--marketing-bg)", textColor: "var(--marketing)" },
-  { id: "5", name: "Sales", color: "var(--sales)", bgColor: "var(--sales-bg)", textColor: "var(--sales)" },
-  // TODO: Product uses operations colors as a placeholder until a dedicated --product token is added
-  { id: "6", name: "Product", color: "var(--operations)", bgColor: "var(--operations-bg)", textColor: "var(--operations)" },
+  { id: "operations", name: "Operations", color: "bg-operations", route: "1" },
+  { id: "engineering", name: "Engineering", color: "bg-engineering", route: "2" },
+  { id: "design", name: "Design", color: "bg-design", route: "3" },
+  { id: "marketing", name: "Marketing", color: "bg-marketing", route: "4" },
+  { id: "sales", name: "Sales", color: "bg-sales", route: "5" },
 ];
+
 
 interface MeetingListItemProps {
   meeting: Meeting;
@@ -32,39 +31,40 @@ interface MeetingListItemProps {
 export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [aiEnabled, setAiEnabled] = useState(meeting.aiEnabled);
-  const [isAgendaDropdownOpen, setIsAgendaDropdownOpen] = useState(false);
-  const [selectedAgendas, setSelectedAgendas] = useState<string[]>([]);
+  const [selectedAgendas, setSelectedAgendas] = useState<string[]>(
+    meeting.agenda ? [meeting.agenda] : []
+  );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [agendaSearch, setAgendaSearch] = useState("");
+  const [agendaPopoverOpen, setAgendaPopoverOpen] = useState(false);
 
   const isPast = meeting.status === "past";
   const isLive = meeting.status === "live";
   const isRecurring = meeting.status === "recurring";
-  const canAddToAgenda = !isPast && !isRecurring;
+  const canAddToAgenda = !isPast;
   const hasExpandableContent =
     meeting.agendaItems?.length || meeting.previousSummary || meeting.description;
 
-  // Handle adding meeting to an agenda
-  const handleAddToAgenda = (departmentId: string) => {
-    if (!selectedAgendas.includes(departmentId)) {
-      setSelectedAgendas([...selectedAgendas, departmentId]);
-    }
-    setIsAgendaDropdownOpen(false);
-  };
-
-  // Handle removing meeting from an agenda
-  const handleRemoveFromAgenda = (departmentId: string) => {
-    setSelectedAgendas(selectedAgendas.filter(id => id !== departmentId));
-  };
-
-  // Get departments that haven't been selected yet
   const availableDepartments = departmentAgendas.filter(
-    dept => !selectedAgendas.includes(dept.id)
+    (dept) => !selectedAgendas.includes(dept.id)
   );
+
+  const filteredDepartments = availableDepartments.filter((dept) =>
+    dept.name.toLowerCase().includes(agendaSearch.toLowerCase())
+  );
+
+  const handleAddToAgenda = (departmentId: string) => {
+    setSelectedAgendas((prev) => [...prev, departmentId]);
+  };
+
+  const handleRemoveFromAgenda = (departmentId: string) => {
+    setSelectedAgendas((prev) => prev.filter((id) => id !== departmentId));
+  };
 
   return (
     <div
       className={cn(
-        "bg-white rounded-xl border border-border overflow-hidden transition-all hover:shadow-sm hover:border-cyan",
+        "bg-white rounded-xl border border-border transition-all hover:shadow-sm hover:border-cyan",
         className
       )}
     >
@@ -90,74 +90,6 @@ export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
                 {meeting.participantCount}
               </span>
             </div>
-            {canAddToAgenda && (
-              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                {/* Add to Agenda button */}
-                <Popover open={isAgendaDropdownOpen} onOpenChange={setIsAgendaDropdownOpen}>
-                  <PopoverTrigger asChild>
-                    <button
-                      className="flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark transition-colors"
-                      aria-label="Add to Agenda"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Add to Agenda</span>
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-56 p-0" align="start">
-                    <div className="px-3 py-2 border-b border-border">
-                      <p className="text-sm font-medium text-foreground">Add to Agenda</p>
-                    </div>
-                    <div className="py-1">
-                      {availableDepartments.length > 0 ? (
-                        availableDepartments.map((dept) => (
-                          <button
-                            key={dept.id}
-                            onClick={() => handleAddToAgenda(dept.id)}
-                            className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted transition-colors"
-                          >
-                            <span 
-                              className="w-2.5 h-2.5 rounded-full" 
-                              style={{ backgroundColor: dept.color }}
-                            />
-                            <span className="text-foreground">{dept.name}</span>
-                          </button>
-                        ))
-                      ) : (
-                        <p className="px-3 py-2 text-sm text-muted-foreground">
-                          Added to all agendas
-                        </p>
-                      )}
-                    </div>
-                  </PopoverContent>
-                </Popover>
-
-                {/* Department tags */}
-                {selectedAgendas.map((deptId) => {
-                  const dept = departmentAgendas.find(d => d.id === deptId);
-                  if (!dept) return null;
-                  return (
-                    <span
-                      key={dept.id}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border"
-                      style={{
-                        backgroundColor: dept.bgColor,
-                        color: dept.textColor,
-                        borderColor: `${dept.color}30`,
-                      }}
-                    >
-                      {dept.name}
-                      <button
-                        onClick={() => handleRemoveFromAgenda(dept.id)}
-                        className="ml-0.5 hover:opacity-70 transition-opacity"
-                        aria-label={`Remove from ${dept.name}`}
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </span>
-                  );
-                })}
-              </div>
-            )}
           </div>
         </div>
 
@@ -197,6 +129,101 @@ export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
           )}
         </div>
       </div>
+
+      {/* Agenda Section */}
+      {canAddToAgenda && (
+        <div className="px-5 pb-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            {availableDepartments.length > 0 && (
+              <Popover
+                open={agendaPopoverOpen}
+                onOpenChange={(open) => {
+                  setAgendaPopoverOpen(open);
+                  if (!open) setAgendaSearch("");
+                }}
+              >
+                <PopoverTrigger asChild>
+                  <button className="inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark transition-colors">
+                    <Plus className="w-3.5 h-3.5" />
+                    Add to Agenda
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64 p-0" align="start">
+                  <div className="p-2 border-b border-border">
+                    <div className="relative">
+                      <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+                      <input
+                        type="text"
+                        value={agendaSearch}
+                        onChange={(e) => setAgendaSearch(e.target.value)}
+                        placeholder="Search agendas..."
+                        className="w-full pl-8 pr-3 py-1.5 text-sm rounded-md border border-border bg-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-cyan focus:border-cyan"
+                        autoFocus
+                      />
+                    </div>
+                  </div>
+                  <div className="p-1 max-h-48 overflow-y-auto">
+                    {filteredDepartments.length > 0 ? (
+                      filteredDepartments.map((dept) => (
+                        <button
+                          key={dept.id}
+                          onClick={() => {
+                            handleAddToAgenda(dept.id);
+                            setAgendaSearch("");
+                            setAgendaPopoverOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors"
+                        >
+                          <span className={cn("w-2 h-2 rounded-full", dept.color)} />
+                          {dept.name}
+                        </button>
+                      ))
+                    ) : (
+                      <p className="px-3 py-4 text-sm text-muted-foreground text-center">
+                        No agendas found
+                      </p>
+                    )}
+                  </div>
+                  <div className="border-t border-border p-1">
+                    <button
+                      onClick={() => setAgendaPopoverOpen(false)}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-cyan rounded-md hover:bg-cyan-light/50 transition-colors"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      Create New Agenda
+                    </button>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
+            {selectedAgendas.map((agendaId) => {
+              const dept = departmentAgendas.find((d) => d.id === agendaId);
+              if (!dept) return null;
+              return (
+                <span
+                  key={dept.id}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-muted text-foreground"
+                >
+                  <Link
+                    href={`/departments/${dept.route}?tab=agenda`}
+                    className="inline-flex items-center gap-1.5 hover:text-cyan-dark transition-colors"
+                  >
+                    <span className={cn("w-2 h-2 rounded-full", dept.color)} />
+                    {dept.name}
+                  </Link>
+                  <button
+                    onClick={() => handleRemoveFromAgenda(dept.id)}
+                    className="ml-0.5 hover:text-red-500 transition-colors"
+                    aria-label={`Remove ${dept.name}`}
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Expandable Content */}
       <AnimatePresence>
@@ -249,7 +276,7 @@ export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
                     <p className="text-sm text-muted-foreground mb-3">
                       {meeting.previousSummary}
                     </p>
-                    <button 
+                    <button
                       onClick={() => setIsDrawerOpen(true)}
                       className="text-sm text-cyan hover:text-cyan-dark transition-colors font-medium"
                     >
@@ -264,7 +291,7 @@ export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
       </AnimatePresence>
 
       {/* Meeting Summary Drawer */}
-      <MeetingSummaryDrawer 
+      <MeetingSummaryDrawer
         meeting={meeting}
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}

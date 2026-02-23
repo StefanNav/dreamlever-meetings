@@ -44,6 +44,7 @@ export interface Meeting {
   description?: string;
   agendaItems?: AgendaItem[];
   previousSummary?: string;
+  agenda?: MeetingCategory;
 }
 
 export type DayFilter = "coming-up" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
