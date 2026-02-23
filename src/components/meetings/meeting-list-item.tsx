@@ -3,25 +3,25 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { expandCollapse } from "@/lib/animation";
-import { Calendar, Clock, Users, ChevronDown, ChevronUp, Plus, X, Search } from "lucide-react";
+import { Calendar, Clock, Users, ChevronDown, ChevronUp, X } from "lucide-react";
 import Link from "next/link";
 import { Meeting } from "@/types/meetings";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { StatusBadge } from "./status-badge";
 import { MeetingSummaryDrawer } from "./meeting-summary-drawer";
+import { AgendaPopover, AgendaColorDot } from "./agenda-popover";
+import type { AgendaDefinition } from "./agenda-popover";
 import { cn } from "@/lib/utils";
 
-const departmentAgendas = [
+const DEPARTMENT_AGENDAS: AgendaDefinition[] = [
   { id: "operations", name: "Operations", color: "bg-operations", route: "1" },
   { id: "engineering", name: "Engineering", color: "bg-engineering", route: "2" },
   { id: "design", name: "Design", color: "bg-design", route: "3" },
   { id: "marketing", name: "Marketing", color: "bg-marketing", route: "4" },
   { id: "sales", name: "Sales", color: "bg-sales", route: "5" },
 ];
-
 
 interface MeetingListItemProps {
   meeting: Meeting;
@@ -34,31 +34,28 @@ export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
   const [selectedAgendas, setSelectedAgendas] = useState<string[]>(
     meeting.agenda ? [meeting.agenda] : []
   );
+  const [customAgendas, setCustomAgendas] = useState<AgendaDefinition[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [agendaSearch, setAgendaSearch] = useState("");
-  const [agendaPopoverOpen, setAgendaPopoverOpen] = useState(false);
 
   const isPast = meeting.status === "past";
   const isLive = meeting.status === "live";
-  const isRecurring = meeting.status === "recurring";
   const canAddToAgenda = !isPast;
   const hasExpandableContent =
     meeting.agendaItems?.length || meeting.previousSummary || meeting.description;
 
-  const availableDepartments = departmentAgendas.filter(
-    (dept) => !selectedAgendas.includes(dept.id)
-  );
+  const allAgendas = [...DEPARTMENT_AGENDAS, ...customAgendas];
 
-  const filteredDepartments = availableDepartments.filter((dept) =>
-    dept.name.toLowerCase().includes(agendaSearch.toLowerCase())
-  );
-
-  const handleAddToAgenda = (departmentId: string) => {
-    setSelectedAgendas((prev) => [...prev, departmentId]);
+  const handleAddToAgenda = (agendaId: string) => {
+    setSelectedAgendas((prev) => [...prev, agendaId]);
   };
 
-  const handleRemoveFromAgenda = (departmentId: string) => {
-    setSelectedAgendas((prev) => prev.filter((id) => id !== departmentId));
+  const handleRemoveFromAgenda = (agendaId: string) => {
+    setSelectedAgendas((prev) => prev.filter((id) => id !== agendaId));
+  };
+
+  const handleCreateAgenda = (agenda: AgendaDefinition) => {
+    setCustomAgendas((prev) => [...prev, agenda]);
+    setSelectedAgendas((prev) => [...prev, agenda.id]);
   };
 
   return (
@@ -134,87 +131,38 @@ export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
       {canAddToAgenda && (
         <div className="px-5 pb-3">
           <div className="flex items-center gap-2 flex-wrap">
-            {availableDepartments.length > 0 && (
-              <Popover
-                open={agendaPopoverOpen}
-                onOpenChange={(open) => {
-                  setAgendaPopoverOpen(open);
-                  if (!open) setAgendaSearch("");
-                }}
-              >
-                <PopoverTrigger asChild>
-                  <button className="inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark transition-colors">
-                    <Plus className="w-3.5 h-3.5" />
-                    Add to Agenda
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent className="w-64 p-0" align="start">
-                  <div className="p-2 border-b border-border">
-                    <div className="relative">
-                      <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
-                      <input
-                        type="text"
-                        value={agendaSearch}
-                        onChange={(e) => setAgendaSearch(e.target.value)}
-                        placeholder="Search agendas..."
-                        className="w-full pl-8 pr-3 py-1.5 text-sm rounded-md border border-border bg-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-cyan focus:border-cyan"
-                        autoFocus
-                      />
-                    </div>
-                  </div>
-                  <div className="p-1 max-h-48 overflow-y-auto">
-                    {filteredDepartments.length > 0 ? (
-                      filteredDepartments.map((dept) => (
-                        <button
-                          key={dept.id}
-                          onClick={() => {
-                            handleAddToAgenda(dept.id);
-                            setAgendaSearch("");
-                            setAgendaPopoverOpen(false);
-                          }}
-                          className="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors"
-                        >
-                          <span className={cn("w-2 h-2 rounded-full", dept.color)} />
-                          {dept.name}
-                        </button>
-                      ))
-                    ) : (
-                      <p className="px-3 py-4 text-sm text-muted-foreground text-center">
-                        No agendas found
-                      </p>
-                    )}
-                  </div>
-                  <div className="border-t border-border p-1">
-                    <button
-                      onClick={() => setAgendaPopoverOpen(false)}
-                      className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-cyan rounded-md hover:bg-cyan-light/50 transition-colors"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      Create New Agenda
-                    </button>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            )}
+            <AgendaPopover
+              agendas={allAgendas}
+              selectedIds={selectedAgendas}
+              onSelect={handleAddToAgenda}
+              onCreateNew={handleCreateAgenda}
+            />
             {selectedAgendas.map((agendaId) => {
-              const dept = departmentAgendas.find((d) => d.id === agendaId);
-              if (!dept) return null;
+              const agenda = allAgendas.find((a) => a.id === agendaId);
+              if (!agenda) return null;
               return (
                 <span
-                  key={dept.id}
+                  key={agenda.id}
                   className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-muted text-foreground"
                 >
-                  <Link
-                    href={`/departments/${dept.route}?tab=agenda`}
-                    className="inline-flex items-center gap-1.5 hover:text-cyan-dark transition-colors"
-                  >
-                    <span className={cn("w-2 h-2 rounded-full", dept.color)} />
-                    {dept.name}
-                  </Link>
+                  {agenda.route ? (
+                    <Link
+                      href={`/departments/${agenda.route}?tab=agenda`}
+                      className="inline-flex items-center gap-1.5 hover:text-cyan-dark transition-colors"
+                    >
+                      <AgendaColorDot color={agenda.color} />
+                      {agenda.name}
+                    </Link>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5">
+                      <AgendaColorDot color={agenda.color} />
+                      {agenda.name}
+                    </span>
+                  )}
                   <button
-                    onClick={() => handleRemoveFromAgenda(dept.id)}
+                    onClick={() => handleRemoveFromAgenda(agenda.id)}
                     className="ml-0.5 hover:text-red-500 transition-colors"
-                    aria-label={`Remove ${dept.name}`}
+                    aria-label={`Remove ${agenda.name}`}
                   >
                     <X className="w-3 h-3" />
                   </button>
