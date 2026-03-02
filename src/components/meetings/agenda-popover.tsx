@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Search, ArrowLeft, Check } from "lucide-react";
+import { Plus, Search, ArrowLeft } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -14,18 +14,7 @@ export interface AgendaDefinition {
   route?: string;
 }
 
-const COLOR_PALETTE = [
-  { hex: "#F44336", label: "Red" },
-  { hex: "#E91E63", label: "Pink" },
-  { hex: "#9C27B0", label: "Purple" },
-  { hex: "#3F51B5", label: "Indigo" },
-  { hex: "#2196F3", label: "Blue" },
-  { hex: "#009688", label: "Teal" },
-  { hex: "#4CAF50", label: "Green" },
-  { hex: "#FF9800", label: "Orange" },
-  { hex: "#795548", label: "Brown" },
-  { hex: "#607D8B", label: "Slate" },
-];
+const DEFAULT_NEW_AGENDA_COLOR = "#607D8B";
 
 const VIEW_TRANSITION = { duration: 0.15, ease: "easeOut" as const };
 
@@ -48,7 +37,6 @@ export function AgendaPopover({
   const [view, setView] = useState<PopoverView>("browse");
   const [search, setSearch] = useState("");
   const [newName, setNewName] = useState("");
-  const [selectedColor, setSelectedColor] = useState(COLOR_PALETTE[0].hex);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   const available = agendas.filter((a) => !selectedIds.includes(a.id));
@@ -58,7 +46,6 @@ export function AgendaPopover({
 
   const resetForm = () => {
     setNewName("");
-    setSelectedColor(COLOR_PALETTE[0].hex);
   };
 
   const handleOpenChange = (isOpen: boolean) => {
@@ -81,7 +68,7 @@ export function AgendaPopover({
     if (!trimmed) return;
 
     const id = `custom-${trimmed.toLowerCase().replace(/\s+/g, "-")}-${Date.now()}`;
-    onCreateNew({ id, name: trimmed, color: selectedColor });
+    onCreateNew({ id, name: trimmed, color: DEFAULT_NEW_AGENDA_COLOR });
     setOpen(false);
   };
 
@@ -190,32 +177,6 @@ export function AgendaPopover({
                   />
                 </div>
 
-                <div>
-                  <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-                    Color
-                  </label>
-                  <div className="flex flex-wrap gap-1.5">
-                    {COLOR_PALETTE.map((c) => (
-                      <button
-                        key={c.hex}
-                        type="button"
-                        onClick={() => setSelectedColor(c.hex)}
-                        className={cn(
-                          "w-6 h-6 rounded-full transition-all flex items-center justify-center",
-                          selectedColor === c.hex
-                            ? "ring-2 ring-offset-1 ring-foreground/30 scale-110"
-                            : "hover:scale-110"
-                        )}
-                        style={{ backgroundColor: c.hex }}
-                        aria-label={c.label}
-                      >
-                        {selectedColor === c.hex && (
-                          <Check className="w-3 h-3 text-white drop-shadow-sm" />
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
               </div>
 
               <div className="px-3 pb-3">

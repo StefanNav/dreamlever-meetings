@@ -9,6 +9,7 @@ import { Meeting } from "@/types/meetings";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { StatusBadge } from "./status-badge";
 import { MeetingSummaryDrawer } from "./meeting-summary-drawer";
 import { AgendaPopover, AgendaColorDot } from "./agenda-popover";
@@ -31,31 +32,57 @@ interface MeetingListItemProps {
 export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [aiEnabled, setAiEnabled] = useState(meeting.aiEnabled);
+  const initialAgendaId =
+    meeting.status === "recurring" ? (meeting.agenda ?? "operations") : meeting.agenda;
   const [selectedAgendas, setSelectedAgendas] = useState<string[]>(
-    meeting.agenda ? [meeting.agenda] : []
+    initialAgendaId ? [initialAgendaId] : []
   );
   const [customAgendas, setCustomAgendas] = useState<AgendaDefinition[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isRemoveTagDialogOpen, setIsRemoveTagDialogOpen] = useState(false);
+  const [agendaIdToRemove, setAgendaIdToRemove] = useState<string | null>(null);
 
   const isPast = meeting.status === "past";
   const isLive = meeting.status === "live";
-  const canAddToAgenda = !isPast;
+  const hasAgendaTag = selectedAgendas.length > 0;
+  const canAddToAgenda = !isPast && !hasAgendaTag;
+  const showAgendaSection = !isPast && (canAddToAgenda || hasAgendaTag);
   const hasExpandableContent =
     meeting.agendaItems?.length || meeting.previousSummary || meeting.description;
 
   const allAgendas = [...DEPARTMENT_AGENDAS, ...customAgendas];
 
   const handleAddToAgenda = (agendaId: string) => {
-    setSelectedAgendas((prev) => [...prev, agendaId]);
+    // A meeting can belong to only one agenda at a time.
+    setSelectedAgendas([agendaId]);
   };
 
   const handleRemoveFromAgenda = (agendaId: string) => {
     setSelectedAgendas((prev) => prev.filter((id) => id !== agendaId));
   };
 
+  const openRemoveAgendaWarning = (agendaId: string) => {
+    setAgendaIdToRemove(agendaId);
+    setIsRemoveTagDialogOpen(true);
+  };
+
+  const confirmRemoveAgendaTag = () => {
+    if (agendaIdToRemove) {
+      handleRemoveFromAgenda(agendaIdToRemove);
+    }
+    setIsRemoveTagDialogOpen(false);
+    setAgendaIdToRemove(null);
+  };
+
+  const cancelRemoveAgendaTag = () => {
+    setIsRemoveTagDialogOpen(false);
+    setAgendaIdToRemove(null);
+  };
+
   const handleCreateAgenda = (agenda: AgendaDefinition) => {
     setCustomAgendas((prev) => [...prev, agenda]);
-    setSelectedAgendas((prev) => [...prev, agenda.id]);
+    // Creating a new agenda immediately tags the meeting once.
+    setSelectedAgendas([agenda.id]);
   };
 
   return (
@@ -128,15 +155,17 @@ export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
       </div>
 
       {/* Agenda Section */}
-      {canAddToAgenda && (
+      {showAgendaSection && (
         <div className="px-5 pb-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <AgendaPopover
-              agendas={allAgendas}
-              selectedIds={selectedAgendas}
-              onSelect={handleAddToAgenda}
-              onCreateNew={handleCreateAgenda}
-            />
+            {canAddToAgenda && (
+              <AgendaPopover
+                agendas={allAgendas}
+                selectedIds={selectedAgendas}
+                onSelect={handleAddToAgenda}
+                onCreateNew={handleCreateAgenda}
+              />
+            )}
             {selectedAgendas.map((agendaId) => {
               const agenda = allAgendas.find((a) => a.id === agendaId);
               if (!agenda) return null;
@@ -160,7 +189,7 @@ export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
                     </span>
                   )}
                   <button
-                    onClick={() => handleRemoveFromAgenda(agenda.id)}
+                    onClick={() => openRemoveAgendaWarning(agenda.id)}
                     className="ml-0.5 hover:text-red-500 transition-colors"
                     aria-label={`Remove ${agenda.name}`}
                   >
@@ -243,6 +272,16 @@ export function MeetingListItem({ meeting, className }: MeetingListItemProps) {
         meeting={meeting}
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
+      />
+      <ConfirmDialog
+        isOpen={isRemoveTagDialogOpen}
+        onClose={cancelRemoveAgendaTag}
+        onConfirm={confirmRemoveAgendaTag}
+        title="Remove agenda tag?"
+        description="This meeting will no longer be associated with that agenda. You can add it again later."
+        confirmLabel="Remove tag"
+        cancelLabel="Keep tag"
+        variant="danger"
       />
     </div>
   );
